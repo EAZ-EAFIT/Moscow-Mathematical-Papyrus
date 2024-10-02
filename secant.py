@@ -2,52 +2,61 @@ import pandas as pd
 
 def secant(x0, x1, niter, tol, function):
     table = []
-    row = {}
-
-    # initial call
-    xn = x1 - function(x1)*(x1 - x0)/(function(x1) - function(x0))
+    
+    # Initial setup
+    xn = x1 - function(x1) * (x1 - x0) / (function(x1) - function(x0))
     x_prev = x1
     x_prev2 = x0
-
-    row["iter"] = 0
-    row["x_n"] = x1
-    row["x_n-1"] = x0
-    row["f(x_n)"] = function(x1)
-    row["abs_err"] = 0
-    row["rel_err"] = 0
-    table.append(row)
-
     err = 100
     iter = 0
 
-    while (iter < niter and err > tol):
+    # First iteration (iteration 0)
+    row = {
+        "Iteración": 0,
+        "x_{n-1}": x0,
+        "x_n": x1,
+        "f(x_n)": function(x1),
+        "Error Relativo (%)": None
+    }
+    table.append(row)
+
+    # Secant method iterations
+    while iter < niter and err >= tol:
+        # Update xn
+        xn = x_prev - function(x_prev) * (x_prev - x_prev2) / (function(x_prev) - function(x_prev2))
+        
+        # Calculate relative error
+        err = abs((xn - x_prev) / xn)
+        
+        # Append row for current iteration
+        row = {
+            "Iteración": iter,
+            "x_{n-1}": x_prev,
+            "x_n": xn,
+            "f(x_n)": function(xn),
+            "Error Relativo (%)": err
+        }
+        table.append(row)
+
         iter += 1
         x_prev2 = x_prev
         x_prev = xn
-        print(iter, x_prev, x_prev2)
-        xn = x_prev - function(x_prev)*(x_prev - x_prev2)/(function(x_prev) - function(x_prev2))
+        
 
-        row = {}
-        row["iter"] = iter
-        row["x_n"] = xn
-        row["x_n-1"] = x_prev
-        row["f(x_n)"] = function(x1)
-        row["abs_err"] = abs(xn - x_prev)
-        row["rel_err"] = abs((xn - x_prev)/xn)
-        table.append(row)
-
-        err = row["abs_err"]
-
+    # Convert table to DataFrame and return
     df = pd.DataFrame(table)
     return df
 
+# Define the function
 def f(x):
-    return x**2 - 4
+    return -2 ** (-x) + x * (-1 + x) - x ** (2/3) - 2
 
-x0 = 1
-x1 = 2
-niter = 10
-tol = 1e-5
+# Parameters
+x0 = 0.663
+x1 = 0.664
+niter = 1000
+tol = 5e-6
 
+# Run the secant method
 result = secant(x0, x1, niter, tol, f)
 print(result)
