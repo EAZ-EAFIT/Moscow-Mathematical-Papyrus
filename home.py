@@ -1,11 +1,15 @@
 import streamlit as st
-import sympy as sp
-from secant import secant
+from Methods.Secant import show_secant
+from Methods.Graph import show_graph
 
 # Function definitions for each page
 def show_home():
     st.title("Numerical Methods Project")
     st.write("Welcome to the project on numerical methods.")
+
+def show_gradient():
+    st.title("Function Graphing")
+    st.write("TODO: Add details and implementation for the Gradient method.")
 
 def show_gradient():
     st.title("Gradient Method")
@@ -22,36 +26,6 @@ def show_newton_multiple_roots():
 def show_quasi_newton():
     st.title("Quasi-Newton Method")
     st.write("TODO: Add details and implementation for Quasi-Newton method.")
-
-def show_secant():
-    st.title("Secant Method")
-
-    # Input parameters
-    function_input = st.text_input("Enter the function of x", 
-                                value="-2 ** (-x) + x * (-1 + x) - x ** (2/3) - 2")
-    x0 = st.number_input("First Point (x0)", value=0.663)
-    x1 = st.number_input("Second Point (x1)", value=0.664)
-    niter = st.number_input("Number of Iterations", value=1000, step=1)
-    tol = st.number_input("Tolerance (TOL)", value=5e-6, format="%.6f")
-
-    x = sp.symbols('x')
-    try:
-        function = sp.lambdify(x, sp.sympify(function_input), 'numpy')
-    except Exception as e:
-        st.error(f"Error in function input: {e}")
-
-    if function_input:
-        # Run the secant method
-        result = secant(x0, x1, niter, tol, function)
-        
-        # Display the results in a pretty table
-        st.subheader("Results")
-        st.dataframe(result)
-
-        # Print the results in console (for debugging, not usually needed in Streamlit)
-        print(result)
-    else:
-        st.error("Please enter a valid function.")
 
 def show_fixed_point():
     st.title("Fixed-Point Method")
@@ -106,7 +80,7 @@ st.sidebar.title("Numerical Methods Menu")
 option = st.sidebar.selectbox(
     "Choose a method:",
     [
-        "Home", "Gradient", "Newton", "Newton Multiple Roots", "Quasi-Newton",
+        "Home", "Function Graphing", "Gradient", "Newton", "Newton Multiple Roots", "Quasi-Newton",
         "Secant", "Fixed-Point", "False Position", "Incremental", "Bisection",
         "Gauss-Jordan without Pivoting", "Gauss-Jordan with Partial Pivoting", "Gauss-Jordan with Total Pivoting",
         "Gauss-Jordan with Fractions", "LU Factorization", "Penalty Method (Internal/External)",
@@ -117,6 +91,8 @@ option = st.sidebar.selectbox(
 # Page routing
 if option == "Home":
     show_home()
+if option == "Function Graphing":
+    show_graph()
 elif option == "Gradient":
     show_gradient()
 elif option == "Newton":
