@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def bisection(a, b, niter, tol, function):
+def bisection(a, b, niter, tol, err_type, function):
     table = []
     row = {}
 
@@ -17,6 +17,7 @@ def bisection(a, b, niter, tol, function):
     row["rel_err"] = 0
     table.append(row)
 
+    err = 100
 
     if (function(a)*function(b) > 0):
         print("No hay raiz en este intervalo")
@@ -24,7 +25,7 @@ def bisection(a, b, niter, tol, function):
     else:
         mid = (a + b)/2
         iter = 0
-        while (iter < niter and abs(function(mid)) > tol):
+        while (iter < niter and err > tol):
             print("Iteracion: ", iter, mid)
             if (function(a)*function(mid) < 0):
                 b = mid
@@ -46,13 +47,18 @@ def bisection(a, b, niter, tol, function):
             row["rel_err"] = abs((mid - prev_mid)/mid)
             table.append(row)
 
+            if (err_type == "abs"):
+                err = row["abs_err"]
+            else:
+                err = row["rel_err"]
+
         df = pd.DataFrame(table)
         return df
 
 
-function = lambda x: x**2 - 4
+function = lambda x: x**2 - 2
 a = -40
-b = 2
+b = 1.3
 
 niter = 300
-print(bisection(a, b, niter, 0.000000001, function))
+print(bisection(a, b, niter, 0.5e-4, "abs", function))

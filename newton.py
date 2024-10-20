@@ -2,7 +2,7 @@ import pandas as pd
 
 
 
-def newton(x0, niter, tol, function, derivative):
+def newton(x0, niter, tol, err_type, function, derivative):
     table = []
     row = {}
 
@@ -35,7 +35,10 @@ def newton(x0, niter, tol, function, derivative):
         row["rel_err"] = abs((xn - x_prev)/xn)
         table.append(row)
 
-        err = row["abs_err"]
+        if (err_type == "abs"):
+            err = row["abs_err"]
+        else:
+            err = row["rel_err"]
 
     df = pd.DataFrame(table)
     return df
