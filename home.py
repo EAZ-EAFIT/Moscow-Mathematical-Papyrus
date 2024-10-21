@@ -1,6 +1,10 @@
 import streamlit as st
-from Methods.Secant import show_secant
-from Methods.Graph import show_graph
+from Views.Graph import show_graph
+from Views.Newton_View import show_newton
+from Views.Secant_View import show_secant
+from Views.Bisection_View import show_bisection
+from Views.RegulaFalsi_View import show_regula_falsi
+from Views.Incremental_View import show_incremental
 
 # Function definitions for each page
 def show_home():
@@ -15,10 +19,6 @@ def show_gradient():
     st.title("Gradient Method")
     st.write("TODO: Add details and implementation for the Gradient method.")
 
-def show_newton():
-    st.title("Newton Method")
-    st.write("TODO: Add details and implementation for the Newton method.")
-
 def show_newton_multiple_roots():
     st.title("Newton for Multiple Roots")
     st.write("TODO: Add details and implementation for Newton with multiple roots.")
@@ -30,18 +30,6 @@ def show_quasi_newton():
 def show_fixed_point():
     st.title("Fixed-Point Method")
     st.write("TODO: Add details and implementation for Fixed-Point method.")
-
-def show_false_position():
-    st.title("False Position Method")
-    st.write("TODO: Add details and implementation for False Position method.")
-
-def show_incremental():
-    st.title("Incremental Method")
-    st.write("TODO: Add details and implementation for Incremental method.")
-
-def show_bisection():
-    st.title("Bisection Method")
-    st.write("TODO: Add details and implementation for Bisection method.")
 
 def show_gauss_jordan_no_pivot():
     st.title("Gauss-Jordan without Pivoting")
@@ -106,7 +94,7 @@ elif option == "Secant":
 elif option == "Fixed-Point":
     show_fixed_point()
 elif option == "False Position":
-    show_false_position()
+    show_regula_falsi()
 elif option == "Incremental":
     show_incremental()
 elif option == "Bisection":

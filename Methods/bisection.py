@@ -1,31 +1,28 @@
 import pandas as pd
 
 
-def bisection(a, b, niter, tol, function):
+def bisection(a, b, niter, tol, tolerance_type, function):
     table = []
     row = {}
+    Error = "Relative Error" if tolerance_type == "Significant Figures" else "Absolute Error"
 
     # initial call
-    row["iter"] = 0
     row["a"] = a
     row["b"] = b
     row["mid"] = (a + b)/2
     row["f(a)"] = function(a)
     row["f(mid)"] = function((a + b)/2)
     row["f(b)"] = function(b)
-    row["abs_err"] = 0
-    row["rel_err"] = 0
+    row[Error] = None
     table.append(row)
-
+    err = 100
 
     if (function(a)*function(b) > 0):
-        print("No hay raiz en este intervalo")
-        return None
+        return {"status":"error" , "message":"Invalid Arguments, the function does not change sign in the interval."}
     else:
         mid = (a + b)/2
         iter = 0
-        while (iter < niter and abs(function(mid)) > tol):
-            print("Iteracion: ", iter, mid)
+        while (iter < niter and err > tol):
             if (function(a)*function(mid) < 0):
                 b = mid
             else:
@@ -35,24 +32,18 @@ def bisection(a, b, niter, tol, function):
             mid = (a + b)/2
 
             row = {}
-            row["iter"] = iter
             row["a"] = a
             row["b"] = b
             row["mid"] = mid
             row["f(a)"] = function(a)
             row["f(mid)"] = function(mid)
             row["f(b)"] = function(b)
-            row["abs_err"] = abs(mid - prev_mid)
-            row["rel_err"] = abs((mid - prev_mid)/mid)
+            if Error == "Relative Error":
+                row[Error] = abs((mid - prev_mid)/mid)
+            else:
+                row[Error] = abs(mid - prev_mid)
+            err = row[Error]
             table.append(row)
 
         df = pd.DataFrame(table)
-        return df
-
-
-function = lambda x: x**2 - 4
-a = -40
-b = 2
-
-niter = 300
-print(bisection(a, b, niter, 0.000000001, function))
+        return {"status":"success", "table":df}
