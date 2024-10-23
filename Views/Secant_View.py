@@ -2,8 +2,8 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import enter_function, calculate_tolerance
-from Methods.Secant import secant
+from interface_blocks import enter_function, calculate_tolerance, graph
+from Methods.secant import secant
 
 def show_secant():
     st.title("Secant Method")
@@ -62,3 +62,5 @@ def show_secant():
 
     # Display DataFrame
     st.dataframe(result_display, use_container_width=True)
+
+    graph(x, function_input)

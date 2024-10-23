@@ -2,8 +2,8 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import enter_function, calculate_tolerance
-from Methods.Newton import get_derivative, newton
+from interface_blocks import enter_function, calculate_tolerance, graph
+from Methods.newton import get_derivative, newton
 
 def show_newton():
     st.title("Newton-Raphson Method")
@@ -62,3 +62,5 @@ def show_newton():
 
     st.subheader("Results")
     st.dataframe(result_display, use_container_width=True)
+
+    graph(x, function_input)

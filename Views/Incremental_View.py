@@ -2,7 +2,7 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import enter_function, calculate_tolerance
+from interface_blocks import enter_function, calculate_tolerance, graph
 from Methods.Incremental import incremental_search
 
 def show_incremental():
@@ -63,3 +63,5 @@ def show_incremental():
 
     st.subheader("Results")
     st.dataframe(result_display, use_container_width=True)
+
+    graph(x, function_input)

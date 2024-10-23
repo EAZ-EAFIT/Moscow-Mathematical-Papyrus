@@ -2,8 +2,8 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import enter_function, calculate_tolerance
-from Methods.Bisection import bisection
+from interface_blocks import enter_function, calculate_tolerance, graph
+from Methods.bisection import bisection
 
 def show_bisection():
     st.title("Bisection Method")
@@ -63,3 +63,5 @@ def show_bisection():
 
     st.subheader("Results")
     st.dataframe(result_display, use_container_width=True)
+
+    graph(x, function_input)
