@@ -1,6 +1,7 @@
 import streamlit as st
-import sympy as sp
+import pandas as pd
 import numpy as np
+import sympy as sp
 import plotly.graph_objs as go
 import plotly.io as pio
 import io
@@ -108,3 +109,71 @@ def graph(x, function_input):
         file_name="newton_raphson_graph.svg",
         mime="image/svg"
     )
+
+
+def definite_matrix_interface():
+    col1 = st.columns(1)[0]
+    with col1:
+        rows_A = st.number_input("Enter number of rows:", min_value=1, value=3)
+        cols_A = rows_A
+
+    col2, col3 = st.columns(2)
+    with col2:
+
+        matrix_A = pd.DataFrame(np.zeros((rows_A, cols_A)), columns=[f'x_{i}' for i in range(cols_A)])
+
+        st.write("A matrix:")
+        edited_matrix = st.data_editor(matrix_A, num_rows="fixed")
+
+        # Convert the edited matrix to a NumPy array
+        matrix_A = edited_matrix.to_numpy()
+    with col3:
+        rows_b = rows_A
+        cols_b = 1
+        vector_b = pd.DataFrame(np.zeros((rows_b, cols_b)), columns=[f'b' for i in range(cols_b)])
+
+        st.write("b vector:")
+        edited_vector = st.data_editor(vector_b, num_rows="fixed")
+
+        vector_b = edited_vector.to_numpy()
+
+    return matrix_A, vector_b
+
+def iterative_matrix_interface():
+    col1 = st.columns(1)[0]
+    with col1:
+        rows_A = st.number_input("Enter number of rows:", min_value=1, value=3)
+        cols_A = rows_A
+
+    col2, col3, col4 = st.columns(3)
+    with col2:
+
+        matrix_A = pd.DataFrame(np.zeros((rows_A, cols_A)), columns=[f'x_{i}' for i in range(cols_A)])
+
+        st.write("A matrix:")
+        edited_matrix = st.data_editor(matrix_A, num_rows="fixed")
+
+        # Convert the edited matrix to a NumPy array
+        matrix_A = edited_matrix.to_numpy()
+    with col3:
+        rows_b = rows_A
+        cols_b = 1
+        vector_b = pd.DataFrame(np.zeros((rows_b, cols_b)), columns=[f'b' for i in range(cols_b)])
+
+        st.write("b vector:")
+        edited_vector = st.data_editor(vector_b, num_rows="fixed")
+
+        vector_b = edited_vector.to_numpy()
+    with col4:
+        rows_x0 = rows_A
+        cols_x0 = 1
+        vector_x0 = pd.DataFrame(np.zeros((rows_x0, cols_x0)), columns=[f'x_{i}' for i in range(cols_x0)])
+
+        st.write("Initial guess vector:")
+        edited_vector_x0 = st.data_editor(vector_x0, num_rows="fixed")
+
+        vector_x0 = edited_vector_x0.to_numpy()
+    
+    calculate_tolerance()
+
+    return matrix_A, vector_b, vector_x0

@@ -1,10 +1,16 @@
 import streamlit as st
+import numpy as np
+import pandas as pd
+
 from Views.Graph import show_graph
 from Views.Newton_View import show_newton
 from Views.Secant_View import show_secant
 from Views.Bisection_View import show_bisection
 from Views.RegulaFalsi_View import show_regula_falsi
 from Views.Incremental_View import show_incremental
+from Views.GaussNoPivot_View import show_gauss_jordan_no_pivot
+
+from interface_blocks import definite_matrix_interface, iterative_matrix_interface
 
 # Function definitions for each page
 def show_home():
@@ -31,10 +37,6 @@ def show_fixed_point():
     st.title("Fixed-Point Method")
     st.write("TODO: Add details and implementation for Fixed-Point method.")
 
-def show_gauss_jordan_no_pivot():
-    st.title("Gauss-Jordan without Pivoting")
-    st.write("TODO: Add details and implementation for Gauss-Jordan without pivoting.")
-
 def show_gauss_jordan_partial_pivot():
     st.title("Gauss-Jordan with Partial Pivoting")
     st.write("TODO: Add details and implementation for Gauss-Jordan with partial pivoting.")
@@ -46,6 +48,7 @@ def show_gauss_jordan_total_pivot():
 def show_gauss_jordan_fractions():
     st.title("Gauss-Jordan with Fractions")
     st.write("TODO: Add details and implementation for Gauss-Jordan with fractions.")
+    matrix_A, vector_b, vector_x0 = iterative_matrix_interface()
 
 def show_lu_factorization():
     st.title("LU Factorization")
