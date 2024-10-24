@@ -6,7 +6,7 @@ from interface_blocks import definite_matrix_interface, calculate_tolerance, ite
 from Methods.Gauss_no_pivot import gauss_no_pivot
 
 def show_gauss_jordan_no_pivot():
-    st.title("Gauss-Jordan Elimination without Pivoting")
+    st.header("Gauss-Jordan Elimination without Pivoting")
 
     matrix_A, vector_b = definite_matrix_interface()
 

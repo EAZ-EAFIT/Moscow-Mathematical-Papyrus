@@ -6,7 +6,7 @@ from interface_blocks import enter_function, calculate_tolerance, graph
 from Methods.Incremental import incremental_search
 
 def show_incremental():
-    st.title("Incremental Search Method")
+    st.header("Incremental Search Method")
 
     x, function_input = enter_function(placeholder_function="x**2 - 4", placeholder_variable="x")
 

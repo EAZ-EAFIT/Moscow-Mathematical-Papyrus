@@ -2,11 +2,11 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import enter_function, calculate_tolerance, graph
+from interface_blocks import enter_function, calculate_tolerance, graph, show_table
 from Methods.secant import secant
 
 def show_secant():
-    st.title("Secant Method")
+    st.header("Secant Method")
 
     x, function_input = enter_function()
 
@@ -44,23 +44,6 @@ def show_secant():
     else:
         result = result["table"]
 
-    # Add a slider to choose the number of decimals to display
-    decimals = st.slider(
-        "Select number of decimals to display on table",
-        min_value=1, 
-        max_value=10, 
-        value=4,
-        help="Adjust the number of decimal places for the result table."
-    )
-
-    # Format the dataframe to display the selected number of decimals
-
-    st.subheader("Results")
-
-    # Format the dataframe to display the selected number of decimals
-    result_display = result.style.format(f"{{:.{decimals}f}}")  # Use f-string to format dynamically
-
-    # Display DataFrame
-    st.dataframe(result_display, use_container_width=True)
+    show_table(result)
 
     graph(x, function_input)

@@ -6,7 +6,7 @@ from interface_blocks import enter_function, calculate_tolerance, graph
 from Methods.bisection import bisection
 
 def show_bisection():
-    st.title("Bisection Method")
+    st.header("Bisection Method")
 
     x, function_input = enter_function(placeholder_function="x**2 - 4", placeholder_variable="x")
 

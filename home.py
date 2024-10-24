@@ -1,7 +1,6 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
 
+# Import necessary views for each method
 from Views.Graph import show_graph
 from Views.Newton_View import show_newton
 from Views.Secant_View import show_secant
@@ -9,112 +8,104 @@ from Views.Bisection_View import show_bisection
 from Views.RegulaFalsi_View import show_regula_falsi
 from Views.Incremental_View import show_incremental
 from Views.GaussNoPivot_View import show_gauss_jordan_no_pivot
+from Views.GaussPartialPivot_View import show_gauss_jordan_partial_pivot
+from Views.GaussTotalPivot_View import show_gauss_jordan_total_pivot
+from Views.LU_Factorization_View import show_lu_factorization
+from Views.Vandermonde_View import show_vandermonde
+from Views.NewtonDividedDiff_View import show_newton_divided_diff
+from Views.Lagrange_View import show_lagrange
+from Views.Spline_View import show_spline
 
-from interface_blocks import definite_matrix_interface, iterative_matrix_interface
+# Initialize session state if not already initialized
+if "page" not in st.session_state:
+    st.session_state.page = "home"
 
 # Function definitions for each page
 def show_home():
     st.title("Numerical Methods Project")
-    st.write("Welcome to the project on numerical methods.")
+    st.write("Welcome to the project on numerical methods. Choose a category from the sidebar.")
 
-def show_gradient():
-    st.title("Function Graphing")
-    st.write("TODO: Add details and implementation for the Gradient method.")
-
-def show_gradient():
-    st.title("Gradient Method")
-    st.write("TODO: Add details and implementation for the Gradient method.")
-
-def show_newton_multiple_roots():
-    st.title("Newton for Multiple Roots")
-    st.write("TODO: Add details and implementation for Newton with multiple roots.")
-
-def show_quasi_newton():
-    st.title("Quasi-Newton Method")
-    st.write("TODO: Add details and implementation for Quasi-Newton method.")
-
-def show_fixed_point():
-    st.title("Fixed-Point Method")
-    st.write("TODO: Add details and implementation for Fixed-Point method.")
-
-def show_gauss_jordan_partial_pivot():
-    st.title("Gauss-Jordan with Partial Pivoting")
-    st.write("TODO: Add details and implementation for Gauss-Jordan with partial pivoting.")
-
-def show_gauss_jordan_total_pivot():
-    st.title("Gauss-Jordan with Total Pivoting")
-    st.write("TODO: Add details and implementation for Gauss-Jordan with total pivoting.")
-
-def show_gauss_jordan_fractions():
-    st.title("Gauss-Jordan with Fractions")
-    st.write("TODO: Add details and implementation for Gauss-Jordan with fractions.")
-    matrix_A, vector_b, vector_x0 = iterative_matrix_interface()
-
-def show_lu_factorization():
-    st.title("LU Factorization")
-    st.write("TODO: Add details and implementation for LU Factorization.")
-
-def show_penalty_method():
-    st.title("Penalty Method (Internal/External)")
-    st.write("TODO: Add details and implementation for Penalty methods.")
-
-def show_kkt():
-    st.title("KKT Method")
-    st.write("TODO: Add details and implementation for KKT.")
-
-def show_bfgs():
-    st.title("BFGS Method")
-    st.write("TODO: Add details and implementation for BFGS.")
-
-# Sidebar navigation
+# Sidebar navigation and categories with buttons for each method
 st.sidebar.title("Numerical Methods Menu")
-option = st.sidebar.selectbox(
-    "Choose a method:",
-    [
-        "Home", "Function Graphing", "Gradient", "Newton", "Newton Multiple Roots", "Quasi-Newton",
-        "Secant", "Fixed-Point", "False Position", "Incremental", "Bisection",
-        "Gauss-Jordan without Pivoting", "Gauss-Jordan with Partial Pivoting", "Gauss-Jordan with Total Pivoting",
-        "Gauss-Jordan with Fractions", "LU Factorization", "Penalty Method (Internal/External)",
-        "KKT", "BFGS"
-    ]
-)
 
-# Page routing
-if option == "Home":
+# Button for "Function Graphing"
+if st.sidebar.button("Show Graph"):
+    st.session_state.page = "graph"
+
+# Buttons for "Finding Roots"
+if st.sidebar.button("Finding Roots"):
+    st.session_state.page = "roots"
+
+# Buttons for "Solving Systems of Equations"
+if st.sidebar.button("Solving Systems of Equations"):
+    st.session_state.page = "systems"
+
+# Buttons for "Interpolation Methods"
+if st.sidebar.button("Interpolation Methods"):
+    st.session_state.page = "interpolation"
+
+# Render the page based on session state
+if st.session_state.page == "home":
     show_home()
-if option == "Function Graphing":
+
+elif st.session_state.page == "graph":
     show_graph()
-elif option == "Gradient":
-    show_gradient()
-elif option == "Newton":
-    show_newton()
-elif option == "Newton Multiple Roots":
-    show_newton_multiple_roots()
-elif option == "Quasi-Newton":
-    show_quasi_newton()
-elif option == "Secant":
-    show_secant()
-elif option == "Fixed-Point":
-    show_fixed_point()
-elif option == "False Position":
-    show_regula_falsi()
-elif option == "Incremental":
-    show_incremental()
-elif option == "Bisection":
-    show_bisection()
-elif option == "Gauss-Jordan without Pivoting":
-    show_gauss_jordan_no_pivot()
-elif option == "Gauss-Jordan with Partial Pivoting":
-    show_gauss_jordan_partial_pivot()
-elif option == "Gauss-Jordan with Total Pivoting":
-    show_gauss_jordan_total_pivot()
-elif option == "Gauss-Jordan with Fractions":
-    show_gauss_jordan_fractions()
-elif option == "LU Factorization":
-    show_lu_factorization()
-elif option == "Penalty Method (Internal/External)":
-    show_penalty_method()
-elif option == "KKT":
-    show_kkt()
-elif option == "BFGS":
-    show_bfgs()
+
+elif st.session_state.page == "roots":
+    st.title("Finding Roots of Polynomials")
+    
+    # Dropdown to select root-finding method
+    root_method = st.selectbox(
+        "Select a root-finding method",
+        ["Newton", "Secant", "Bisection", "False Position", "Incremental Search"]
+    )
+    
+    # Display the corresponding method content based on the dropdown selection
+    if root_method == "Newton":
+        show_newton()
+    elif root_method == "Secant":
+        show_secant()
+    elif root_method == "Bisection":
+        show_bisection()
+    elif root_method == "False Position":
+        show_regula_falsi()
+    elif root_method == "Incremental Search":
+        show_incremental()
+
+elif st.session_state.page == "systems":
+    st.title("Solving Systems of Equations")
+    
+    # Dropdown to select a system-solving method
+    system_method = st.selectbox(
+        "Select a system-solving method",
+        ["Gauss-Jordan without Pivoting", "Gauss-Jordan with Partial Pivoting", "Gauss-Jordan with Total Pivoting", "LU Factorization"]
+    )
+    
+    # Display the corresponding method content based on the dropdown selection
+    if system_method == "Gauss-Jordan without Pivoting":
+        show_gauss_jordan_no_pivot()
+    elif system_method == "Gauss-Jordan with Partial Pivoting":
+        show_gauss_jordan_partial_pivot()
+    elif system_method == "Gauss-Jordan with Total Pivoting":
+        show_gauss_jordan_total_pivot()
+    elif system_method == "LU Factorization":
+        show_lu_factorization()
+
+elif st.session_state.page == "interpolation":
+    st.title("Interpolation Methods")
+    # Dropdown to select interpolation method
+    interpolation_method = st.selectbox(
+        "Select an interpolation method",
+        ["Vandermonde Matrix", "Newton Divided Difference", "Lagrange Interpolation", "Spline Interpolation (Linear, Square, Cubic)"]
+    )
+    
+    # Display the corresponding method content based on the dropdown selection
+    if interpolation_method == "Vandermonde Matrix":
+        show_vandermonde()
+    elif interpolation_method == "Newton Divided Difference":
+        show_newton_divided_diff()
+    elif interpolation_method == "Lagrange Interpolation":
+        show_lagrange()
+    elif interpolation_method == "Spline Interpolation (Linear, Square, Cubic)":
+        show_spline()
+

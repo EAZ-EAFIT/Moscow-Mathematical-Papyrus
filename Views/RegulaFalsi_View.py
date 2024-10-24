@@ -2,16 +2,11 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-<<<<<<< HEAD
 from interface_blocks import enter_function, calculate_tolerance, graph
 from Methods.regula_falsi import regula_falsi
-=======
-from interface_blocks import enter_function, calculate_tolerance
-from Methods.Regula_falsi import regula_falsi
->>>>>>> 3596be8 (Matrix interface support and initial Gaussian elimination)
 
 def show_regula_falsi():
-    st.title("False Position Method")
+    st.header("False Position Method")
 
     x, function_input = enter_function(placeholder_function="x**2 - 4", placeholder_variable="x")
 

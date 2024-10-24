@@ -6,7 +6,7 @@ from interface_blocks import enter_function, calculate_tolerance, graph
 from Methods.newton import get_derivative, newton
 
 def show_newton():
-    st.title("Newton-Raphson Method")
+    st.header("Newton-Raphson Method")
 
     x, function_input = enter_function()
 

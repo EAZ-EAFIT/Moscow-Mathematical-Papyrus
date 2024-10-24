@@ -69,7 +69,6 @@ def calculate_tolerance():
 def graph(x, function_input):
     
     function = sp.lambdify(x, sp.sympify(function_input), 'numpy')
-        # Graph
     st.subheader("Graph")
 
     col7, col8 = st.columns(2)
@@ -177,3 +176,91 @@ def iterative_matrix_interface():
     calculate_tolerance()
 
     return matrix_A, vector_b, vector_x0
+
+def enter_points():
+    # Use Streamlit's session state to retain current points
+    if 'x_values' not in st.session_state:
+        st.session_state.x_values = []
+    if 'y_values' not in st.session_state:
+        st.session_state.y_values = []
+
+    # Get the number of points from user input
+    num_points = st.number_input(
+        "Enter the number of points:", 
+        min_value=1, 
+        value=len(st.session_state.x_values) or 1,  # Default to current number of points or 1
+        step=1, 
+        key="num_points"
+    )
+
+    # Create a DataFrame to hold the points
+    points_df = pd.DataFrame(np.zeros((2, num_points)), index=['x', 'y'])
+
+    # Fill in existing x and y values if available
+    if len(st.session_state.x_values) > 0:
+        points_df.iloc[0][:len(st.session_state.x_values)] = st.session_state.x_values
+        points_df.iloc[1][:len(st.session_state.y_values)] = st.session_state.y_values
+        
+        # If the last x value exists, set the next x value to one more
+        if len(st.session_state.x_values) < num_points:
+            points_df.iloc[0][len(st.session_state.x_values)] = st.session_state.x_values[-1] + 1
+
+    # Allow the user to edit the DataFrame
+    edited_points_df = st.data_editor(points_df, num_rows="fixed", key="points_editor", use_container_width=True)
+
+    # Update session state with new values
+    st.session_state.x_values = edited_points_df.iloc[0].tolist()
+    st.session_state.y_values = edited_points_df.iloc[1].tolist()
+
+    return st.session_state.x_values, st.session_state.y_values
+
+# Function to graph Newton interpolation result
+def graph_with_points(x_values, y_values, function, x_symbol = sp.symbols("x")):
+
+    function = sp.lambdify(x_symbol, function, "numpy")
+
+    x_min = min(x_values) - 1
+    x_max = max(x_values) + 1
+    x_vals = np.linspace(x_min, x_max, 500)
+    y_vals = [function(x_val) for x_val in x_vals]
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name='Polynomial P(x)'))
+    fig.add_trace(go.Scatter(x=x_values, y=y_values, mode='markers', name='Data Points'))
+
+
+    fig.update_layout(
+        title=f"Graph of the Interpolation",
+        xaxis_title=str(x_symbol),
+        yaxis_title=f"y",
+        showlegend=True,
+        margin=dict(l=0, r=0, t=40, b=0),
+        hovermode="closest"
+    )
+
+    st.plotly_chart(fig)
+
+    buf = io.BytesIO()
+    pio.write_image(fig, buf, format='svg')
+    buf.seek(0)
+    st.download_button(
+        label="Download Graph as SVG",
+        data=buf,
+        file_name="interpolation_graph.svg",
+        mime="image/svg"
+    )
+
+def show_table(result, deci = True, decimals = None):
+    if deci:
+        decimals = st.slider(
+            "Select number of decimals to display on table",
+            min_value=1, 
+            max_value=10, 
+            value=4,
+            help="Adjust the number of decimal places for the result table."
+        )
+    if deci or decimals != None:
+
+        result = result.style.format(f"{{:.{decimals}f}}")
+
+    st.dataframe(result, use_container_width=True)
