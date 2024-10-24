@@ -39,6 +39,30 @@ def gauss_no_pivot(A, b):
 
     return {"status":"success", "A":A, "b":b}
 
+def back_substitution(A,b):
+    n = len(A)
+    x = np.zeros(n)
+
+    for i in range(0,n, -1):
+        x[i] = b[i]
+        for j in range(i+1, n):
+            if j != i:
+                x[i] -= A[i][j] * x[j]
+        x[i] = x[i] / A[i][i]
+    return x
+
+def forward_substitution(A,b):
+    n = len(A)
+    x = np.zeros(n)
+
+    for i in range(0,n):
+        x[i] = b[i]
+        for j in range(i+1, n):
+            if j != i:
+                x[i] -= A[i][j] * x[j]
+        x[i] = x[i] / A[i][i]
+    return x
+
 # Example
 A = np.array([[0, 1, 0], [0, 3, 2], [1, 0, 0]], dtype=float)
 b = np.array([4, 5, 6], dtype=float)
@@ -47,3 +71,4 @@ if result["status"] == "error":
     print(result["message"])
 else:
     print(result["A"], result["b"])
+    print(back_substitution(result["A"], result["b"]))
