@@ -18,18 +18,23 @@ def newton_interpolation(x, y, decimals, x_sym=sp.symbols("x")):
     coefficients = np.diagonal(matrix)  # Original coefficients
     rounded_coefficients = np.round(coefficients, decimals)  # Rounded coefficients
 
-    # Create the Newton polynomial using original coefficients for the unrounded polynomial
     newton_poly_unrounded = 0
     newton_poly_rounded = 0
 
     for i in range(n):
-        term_unrounded = coefficients[i]
-        term_rounded = rounded_coefficients[i]
+        # Initialize the term as a product of the coefficient and 1
+        term_unrounded = sp.Mul(coefficients[i], 1)  # Use sp.Mul to maintain the product form
+        term_rounded = sp.Mul(rounded_coefficients[i], 1)
+
+        # Create the polynomial term without expansion
         for j in range(i):
-            term_unrounded *= (x_sym - x[j])
-            term_rounded *= (x_sym - x[j])
+            term_unrounded = sp.Mul(term_unrounded, (x_sym - x[j]), evaluate = False)  # Multiply using sp.Mul
+            term_rounded = sp.Mul(term_rounded, (x_sym - x[j]), evaluate = False)  # Multiply using sp.Mul
+
+        # Add to the total polynomial
         newton_poly_unrounded += term_unrounded
         newton_poly_rounded += term_rounded
+
 
     # SymPy expressions of the Newton polynomials
     newton_poly_expr_unrounded = sp.expand(newton_poly_unrounded)
