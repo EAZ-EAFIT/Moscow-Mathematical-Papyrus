@@ -1,4 +1,5 @@
 import streamlit as st
+import sympy as sp
 from Methods.Vandermonde import vandermonde
 from interface_blocks import enter_points, graph_with_points
 
@@ -26,5 +27,5 @@ def show_vandermonde():
     st.write("**Vandermonde Polynomial**")
     st.latex(f"P(x) = {sp.latex(poly_rounded)}") 
 
-    st.subheader("Graph of Newton Interpolation")
+    st.subheader("Graph of Vandermonde Interpolation")
     graph_with_points(x_values, y_values, poly)

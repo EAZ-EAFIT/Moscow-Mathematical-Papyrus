@@ -29,9 +29,9 @@ def show_lagrange():
     st.write("**Lagrange Polynomial**")
     st.latex(f"P(x) = {sp.latex(pol_rounded)}")
 
-    st.write("**Newton Polynomial Simplified**")
+    st.write("**Lagrange Polynomial Simplified**")
     st.latex(f"P(x) = {sp.latex(pol_rounded_sim)}")
 
     # Graph the interpolation polynomial
-    st.subheader("Graph of Newton Interpolation")
+    st.subheader("Graph of Lagrange Interpolation")
     graph_with_points(x_values, y_values, pol)

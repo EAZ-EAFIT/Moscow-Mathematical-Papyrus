@@ -96,7 +96,7 @@ elif st.session_state.page == "interpolation":
     # Dropdown to select interpolation method
     interpolation_method = st.selectbox(
         "Select an interpolation method",
-        ["Vandermonde Matrix", "Newton Divided Difference", "Lagrange Interpolation", "Spline Interpolation (Linear, Square, Cubic)"]
+        ["Vandermonde Matrix", "Newton Divided Difference", "Lagrange Interpolation", "Linear Spline Interpolation"]
     )
     
     # Display the corresponding method content based on the dropdown selection
@@ -106,6 +106,6 @@ elif st.session_state.page == "interpolation":
         show_newton_divided_diff()
     elif interpolation_method == "Lagrange Interpolation":
         show_lagrange()
-    elif interpolation_method == "Spline Interpolation (Linear, Square, Cubic)":
+    elif interpolation_method == "Linear Spline Interpolation":
         show_spline()
 

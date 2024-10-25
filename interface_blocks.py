@@ -105,7 +105,7 @@ def graph(x, function_input):
     st.download_button(
         label="Download Graph as SVG",
         data=buf,
-        file_name="newton_raphson_graph.svg",
+        file_name="graph.svg",
         mime="image/svg"
     )
 
@@ -214,7 +214,6 @@ def enter_points():
 
     return st.session_state.x_values, st.session_state.y_values
 
-# Function to graph Newton interpolation result
 def graph_with_points(x_values, y_values, function, x_symbol = sp.symbols("x")):
 
     function = sp.lambdify(x_symbol, function, "numpy")
