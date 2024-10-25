@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from interface_blocks import definite_matrix_interface, calculate_tolerance, iterative_matrix_interface
 from Methods.Gauss_no_pivot import gauss_no_pivot
+from Methods.matrix_helpers import back_substitution
 
 def show_gauss_jordan_no_pivot():
     st.header("Gauss-Jordan Elimination without Pivoting")
@@ -16,8 +17,13 @@ def show_gauss_jordan_no_pivot():
         st.error(result["message"])
         return
     else:
-        vector_x = result["vector"]
-    
+        eliminated_matrix = result["A"]
+        vector_b = result["b"]
+
+        vector_x = back_substitution(eliminated_matrix, vector_b)
+
+        vector_x = sp.Matrix(vector_x)
+
     st.subheader("Results")
     st.write("The solution vector is:")
-    st.write(vector_x)
+    st.latex(sp.latex(vector_x))

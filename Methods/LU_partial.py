@@ -37,7 +37,10 @@ def LU_partial(A):
 
     return {"status":"success", "U":A, "L":L, "P":P}
 
-def solve_LU_simple(L,U,b):
+
+# ?? REVISAR
+def solve_LU_partial(P,L,U,b):
+    b = np.inv(P) @ b
     y = forward_substitution(L,b)
     x = back_substitution(U,y)
     return x

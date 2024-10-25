@@ -14,7 +14,7 @@ def LU_simple(A):
         current_value = A[i][i]
         if current_value == 0:
             return {"status":"error", "message":"The matrix cannot be decomposed without permuting rows."}
-        
+
         for j in range(i+1, n):
             factor = A[j][i] /A[i][i]
             A[j] = A[j] - factor * A[i]
