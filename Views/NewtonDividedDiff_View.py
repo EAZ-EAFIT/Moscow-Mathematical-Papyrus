@@ -1,10 +1,6 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import sympy as sp
-import plotly.graph_objs as go
-import plotly.io as pio
-import io
 from Methods.newton_interpolation import newton_interpolation
 from interface_blocks import enter_points, graph_with_points, show_table
 
@@ -42,4 +38,3 @@ def show_newton_divided_diff():
     # Graph the interpolation polynomial
     st.subheader("Graph of Newton Interpolation")
     graph_with_points(x_values, y_values, newton_poly_expr_unrounded)
-
