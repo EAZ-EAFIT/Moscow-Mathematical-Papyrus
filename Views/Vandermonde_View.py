@@ -25,7 +25,7 @@ def show_vandermonde():
 
     st.subheader("Results")
     st.write("**Vandermonde Polynomial**")
-    st.latex(f"P(x) = {sp.latex(poly_rounded)}") 
+    st.write(f"$P(x) = {sp.latex(poly_rounded)}$") 
 
     st.subheader("Graph of Vandermonde Interpolation")
     graph_with_points(x_values, y_values, poly)

@@ -22,16 +22,16 @@ def show_lagrange():
             help="Adjust the number of decimal places for the result table."
         )
     
-    pol, pol_rounded, pol_sim, pol_rounded_sim = lagrange(x_values, y_values, decimals)
+    pol_decimal, pol_rounded_decimal, newton_poly_expr_unrounded, newton_poly_expr_rounded = lagrange(x_values, y_values, decimals)
 
     # Display results
     st.subheader("Results")
     st.write("**Lagrange Polynomial**")
-    st.latex(f"P(x) = {sp.latex(pol_rounded)}")
+    st.write(f"$P(x) = {sp.latex(pol_rounded_decimal)}$")
 
     st.write("**Lagrange Polynomial Simplified**")
-    st.latex(f"P(x) = {sp.latex(pol_rounded_sim)}")
+    st.write(f"$P(x) = {sp.latex(newton_poly_expr_rounded)}$")
 
     # Graph the interpolation polynomial
     st.subheader("Graph of Lagrange Interpolation")
-    graph_with_points(x_values, y_values, pol)
+    graph_with_points(x_values, y_values, pol_decimal)

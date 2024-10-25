@@ -4,7 +4,7 @@ import numpy as np
 import sympy as sp
 import plotly.graph_objs as go
 import plotly.io as pio
-import io
+import os
 
 def enter_function(placeholder_variable = "x", placeholder_function = "sin(x)"):
     col1, col2 = st.columns(2)
@@ -66,10 +66,11 @@ def calculate_tolerance():
     )
     return tol, niter, tolerance_type
 
+
 def graph(x, function_input):
-    
+
+    # Create a symbolic function
     function = sp.lambdify(x, sp.sympify(function_input), 'numpy')
-    st.subheader("Graph")
 
     col7, col8 = st.columns(2)
     with col7:
@@ -77,38 +78,39 @@ def graph(x, function_input):
     with col8:
         x_max = st.number_input(f"Enter the maximum value for {x}", value=10, step=1)
 
-
     x_vals = np.linspace(x_min, x_max, 1000)
     y_vals = function(x_vals)
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name=function_input))
 
     fig.update_layout(
-            title=f"Graph of {function_input}",
-            xaxis_title= str(x),
-            yaxis_title= f"f({str(x)})",
-            showlegend=True,
-            margin=dict(l=0, r=0, t=40, b=0),
-            hovermode="closest"
+        title=f"Graph of {function_input}",
+        xaxis_title=str(x),
+        yaxis_title=f"f({str(x)})",
+        showlegend=True,
+        margin=dict(l=0, r=0, t=40, b=0),
+        hovermode="closest"
     )
-
-    fig.update_xaxes(rangeslider_visible=False)
-    fig.update_yaxes(fixedrange=False)
+    print("hello")
 
     st.plotly_chart(fig)
 
-    # Download button for the graph
-    buf = io.BytesIO()
-    pio.write_image(fig, buf, format='svg')
-    buf.seek(0)
+    svg_file = "function_graph.svg"
+    pio.write_image(fig, svg_file, format='svg', engine='kaleido')
 
-    st.download_button(
-        label="Download Graph as SVG",
-        data=buf,
-        file_name="graph.svg",
-        mime="image/svg"
-    )
-
+    
+    # Check if the SVG file was created
+    try:
+        with open(svg_file, "rb") as file:
+            st.download_button(
+                label="Download SVG Image",
+                data=file,
+                file_name="function_graph.svg",
+                mime="image/svg+xml"
+            )
+    except FileNotFoundError:
+        st.error("SVG file not found. Please check if it was created correctly.")
 
 def definite_matrix_interface():
     col1 = st.columns(1)[0]
@@ -177,33 +179,39 @@ def iterative_matrix_interface():
 
     return matrix_A, vector_b, vector_x0
 
-def enter_points():
+def enter_points(val=1):
     # Use Streamlit's session state to retain current points
     if 'x_values' not in st.session_state:
         st.session_state.x_values = []
     if 'y_values' not in st.session_state:
         st.session_state.y_values = []
 
+    # Determine default number of points
+    default_value = max(len(st.session_state.x_values), val)  # Ensure default value is at least `val`
+
     # Get the number of points from user input
     num_points = st.number_input(
         "Enter the number of points:", 
-        min_value=1, 
-        value=len(st.session_state.x_values) or 1,  # Default to current number of points or 1
+        min_value=val, 
+        value=default_value,  # Use `default_value` that is at least `val`
         step=1, 
         key="num_points"
     )
-
     # Create a DataFrame to hold the points
     points_df = pd.DataFrame(np.zeros((2, num_points)), index=['x', 'y'])
 
+    # Ensure slice length matches DataFrame's available length
+    x_values_to_fill = st.session_state.x_values[:num_points]
+    y_values_to_fill = st.session_state.y_values[:num_points]
+
     # Fill in existing x and y values if available
     if len(st.session_state.x_values) > 0:
-        points_df.iloc[0][:len(st.session_state.x_values)] = st.session_state.x_values
-        points_df.iloc[1][:len(st.session_state.y_values)] = st.session_state.y_values
+        points_df.iloc[0][:len(x_values_to_fill)] = x_values_to_fill
+        points_df.iloc[1][:len(y_values_to_fill)] = y_values_to_fill
         
         # If the last x value exists, set the next x value to one more
         if len(st.session_state.x_values) < num_points:
-            points_df.iloc[0][len(st.session_state.x_values)] = st.session_state.x_values[-1] + 1
+            points_df.iloc[0][len(x_values_to_fill)] = st.session_state.x_values[-1] + 1
 
     # Allow the user to edit the DataFrame
     edited_points_df = st.data_editor(points_df, num_rows="fixed", key="points_editor", use_container_width=True)
@@ -239,15 +247,21 @@ def graph_with_points(x_values, y_values, function, x_symbol = sp.symbols("x")):
 
     st.plotly_chart(fig)
 
-    buf = io.BytesIO()
-    pio.write_image(fig, buf, format='svg')
-    buf.seek(0)
-    st.download_button(
-        label="Download Graph as SVG",
-        data=buf,
-        file_name="interpolation_graph.svg",
-        mime="image/svg"
-    )
+    svg_file = "function_graph.svg"
+    pio.write_image(fig, svg_file, format='svg', engine='kaleido')
+
+    
+    # Check if the SVG file was created
+    try:
+        with open(svg_file, "rb") as file:
+            st.download_button(
+                label="Download SVG Image",
+                data=file,
+                file_name="function_graph.svg",
+                mime="image/svg+xml"
+            )
+    except FileNotFoundError:
+        st.error("SVG file not found. Please check if it was created correctly.")
 
 def show_table(result, deci = True, decimals = None):
     if deci:

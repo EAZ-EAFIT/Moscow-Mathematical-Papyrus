@@ -6,7 +6,7 @@ from interface_blocks import enter_points, graph_with_points
 def show_spline():
     st.header("Linear Spline Method")
 
-    x_values, y_values = enter_points()
+    x_values, y_values = enter_points(val = 2)
 
     # Check for repeated x values
     if len(x_values) != len(set(x_values)):
@@ -22,13 +22,14 @@ def show_spline():
         )
     
     piecewise_function_unrounded, piecewise_function_rounded = linear_spline_interpolation(x_values, y_values, decimals)
-
+    
     # Display results
     st.subheader("Results")
     st.write("**Linear Spline Piecewise Function**")
-    st.latex(f"P(x) = {sp.latex(piecewise_function_rounded)}")
+    st.write(f"$P(x) = {sp.latex(piecewise_function_rounded)}$")
 
 
     # Graph the interpolation polynomial
-    st.subheader("Graph of Newton Interpolation")
+    st.subheader("Graph of Spline Interpolation")
     graph_with_points(x_values, y_values, piecewise_function_unrounded)
+

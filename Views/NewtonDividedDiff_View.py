@@ -30,10 +30,10 @@ def show_newton_divided_diff():
     show_table(pd.DataFrame(matrix), deci= False, decimals = decimals)
 
     st.write("**Newton Polynomial**")
-    st.latex(f"P(x) = {sp.latex(newton_poly_rounded)}")
+    st.write(f"$P(x) = {sp.latex(newton_poly_rounded)}$")
 
     st.write("**Newton Polynomial Simplified**")
-    st.latex(f"P(x) = {sp.latex(newton_poly_expr_rounded)}")
+    st.write(f"$P(x) = {sp.latex(newton_poly_expr_rounded)}$")
 
     # Graph the interpolation polynomial
     st.subheader("Graph of Newton Interpolation")
