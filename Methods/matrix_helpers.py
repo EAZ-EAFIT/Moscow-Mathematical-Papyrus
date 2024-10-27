@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def back_substitution(A,b):
     n = len(A)
     x = np.zeros(n)
@@ -19,7 +18,7 @@ def forward_substitution(A,b):
 
     for i in range(0,n):
         x[i] = b[i]
-        for j in range(i+1, n):
+        for j in range(0, n):
             if j != i:
                 x[i] -= A[i][j] * x[j]
         x[i] = x[i] / A[i][i]

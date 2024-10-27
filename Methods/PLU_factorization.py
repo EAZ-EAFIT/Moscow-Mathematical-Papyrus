@@ -2,16 +2,18 @@ import pandas as pd
 import sympy as sp
 import numpy as np
 
-from matrix_helpers import back_substitution, forward_substitution
+from .matrix_helpers import back_substitution, forward_substitution
 
-def LU_partial(A):
+def PLU_factorization(A):
+    A = A.copy().astype(float)
     n = len(A)
     i = 0
 
-    L = np.eye(n)
-    P = np.eye(n)
+    L = np.eye(n).astype(float)
+    P = np.eye(n).astype(float)
 
     while i < n:
+        P_new = np.eye(n)
         swap_index = np.argmax(np.abs(A[i:, i])) + i
 
         if A[swap_index][i] == 0:
@@ -22,12 +24,13 @@ def LU_partial(A):
             A[i] = A[swap_index]
             A[swap_index] = swap_row
 
-            P[i][i] = 0
-            P[swap_index][swap_index] = 0
-            P[swap_index][i] = 1
-            P[i][swap_index] = 1
+            P_new[i][i] = 0
+            P_new[swap_index][swap_index] = 0
+            P_new[swap_index][i] = 1
+            P_new[i][swap_index] = 1
 
-
+            P = P_new @ P
+        
         for j in range(i+1, n):
             factor = A[j][i] /A[i][i]
             A[j] = A[j] - factor * A[i]
@@ -37,10 +40,7 @@ def LU_partial(A):
 
     return {"status":"success", "U":A, "L":L, "P":P}
 
-
-# ?? REVISAR
-def solve_LU_partial(P,L,U,b):
-    b = np.inv(P) @ b
-    y = forward_substitution(L,b)
+def solve_PLU(P,L,U,b):
+    y = forward_substitution(L,np.dot(P,b))
     x = back_substitution(U,y)
     return x

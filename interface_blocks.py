@@ -115,7 +115,7 @@ def graph(x, function_input):
 def definite_matrix_interface():
     col1 = st.columns(1)[0]
     with col1:
-        rows_A = st.number_input("Enter number of rows:", min_value=1, value=3)
+        rows_A = st.number_input("Enter number of rows:", min_value=2, value=3)
         cols_A = rows_A
 
     col2, col3 = st.columns(2)
@@ -277,3 +277,57 @@ def show_table(result, deci = True, decimals = None):
         result = result.style.format(f"{{:.{decimals}f}}")
 
     st.dataframe(result, use_container_width=True)
+
+def gauss_matrix_result(row_echelon, vector_b, vector_x, decimals = 5):
+        decimals = st.slider(
+            "Select number of decimals to display",
+            min_value=1, 
+            max_value=10, 
+            value=4,
+            help="Adjust the number of decimal places in the result."
+        )
+
+        st.subheader("Result")
+        
+        st.write("**Row echelon form A and vector b**")
+        col1, col2 = st.columns(2)
+        with col1:
+            row_echelon = sp.Matrix(np.round(row_echelon, decimals))
+            st.latex(f"R = {sp.latex(row_echelon)}")
+        with col2:
+            vector_b = sp.Matrix(np.round(vector_b, decimals))
+            st.latex(f"\\vec{{b}} = {sp.latex(vector_b)}")
+
+        st.write("**Solution vector**")
+        vector_x = sp.Matrix(np.round(vector_x, decimals))
+        st.latex(f"\\vec{{x}} = {sp.latex(vector_x)}")
+
+def LU_result(U, L, vector_x, P=None, decimals = 5):
+        decimals = st.slider(
+            "Select number of decimals to display",
+            min_value=1, 
+            max_value=10, 
+            value=4,
+            help="Adjust the number of decimal places in the result."
+        )
+
+        st.subheader("Result")
+        
+        if P is not None:
+            st.write("**PLU decomposition for A**")
+            P = sp.Matrix(np.round(P, decimals))
+            st.latex(f"P = {sp.latex(P)}")
+        else:
+            st.write("**LU decomposition for A**")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            L = sp.Matrix(np.round(L, decimals))
+            st.latex(f"L = {sp.latex(L)}")
+        with col2:
+            U = sp.Matrix(np.round(U, decimals))
+            st.latex(f"U = {sp.latex(U)}")
+
+        st.write("**Solution vector**")
+        vector_x = sp.Matrix(np.round(vector_x, decimals))
+        st.latex(f"\\vec{{x}} = {sp.latex(vector_x)}")

@@ -29,7 +29,7 @@ def gauss_no_pivot(A, b):
             b[i] = b[j]
             b[j] = swap_b
         print("A", A)
-        
+
         for j in range(i+1, n):
             factor = A[j][i] /A[i][i]
             A[j] = A[j] - factor * A[i]

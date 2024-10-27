@@ -2,7 +2,7 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import definite_matrix_interface, calculate_tolerance, iterative_matrix_interface
+from interface_blocks import definite_matrix_interface, calculate_tolerance, iterative_matrix_interface, gauss_matrix_result
 from Methods.Gauss_partial_pivot import gauss_partial_pivot
 from Methods.matrix_helpers import back_substitution
 
@@ -18,30 +18,9 @@ def show_gauss_jordan_partial_pivot():
         st.error(result["message"])
         return
     else:
-        eliminated_matrix = result["A"]
+        row_echelon = result["A"]
         vector_b = result["b"]
 
-        vector_x = back_substitution(eliminated_matrix, vector_b)
+        vector_x = back_substitution(row_echelon, vector_b)
 
-    decimals = st.slider(
-            "Select number of decimals to display",
-            min_value=1, 
-            max_value=10, 
-            value=4,
-            help="Adjust the number of decimal places in the result."
-        )
-    
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        eliminated_matrix = sp.Matrix(eliminated_matrix)
-        st.subheader("Eliminated Matrix")
-        st.latex(sp.latex(eliminated_matrix))
-    with col2:
-        vector_b = sp.Matrix(vector_b)
-        st.subheader("Vector b")
-        st.latex(sp.latex(vector_b))
-    with col3:
-        vector_x = sp.Matrix(vector_x)
-        st.subheader("Result")
-        st.latex(sp.latex(vector_x))
+    gauss_matrix_result(row_echelon, vector_b, vector_x)

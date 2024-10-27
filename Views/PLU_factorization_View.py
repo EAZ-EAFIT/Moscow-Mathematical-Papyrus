@@ -3,14 +3,14 @@ import sympy as sp
 import pandas as pd
 import numpy as np
 from interface_blocks import definite_matrix_interface, LU_result
-from Methods.LU_factorization import LU_factorization, solve_LU
+from Methods.PLU_factorization import PLU_factorization, solve_PLU
 
-def show_LU_factorization():
-    st.header("LU Factorization without pivoting")
+def show_PLU_factorization():
+    st.header("LU Factorization with pivoting")
 
     matrix_A, vector_b = definite_matrix_interface()
 
-    result = LU_factorization(matrix_A)
+    result = PLU_factorization(matrix_A)
 
     if result["status"] == "error":
         st.error(result["message"])
@@ -18,8 +18,8 @@ def show_LU_factorization():
     else:
         L = result["L"]
         U = result["U"]
+        P = result["P"]
 
-        vector_x = solve_LU(L, U, vector_b)
+        vector_x = solve_PLU(P, L, U, vector_b)
     
-
-    LU_result(L=L, U=U, vector_x=vector_x)
+    LU_result(P=P, L=L, U=U, vector_x=vector_x)

@@ -10,7 +10,8 @@ from Views.Incremental_View import show_incremental
 from Views.GaussNoPivot_View import show_gauss_jordan_no_pivot
 from Views.GaussPartialPivot_View import show_gauss_jordan_partial_pivot
 from Views.GaussTotalPivot_View import show_gauss_jordan_total_pivot
-from Views.LU_Factorization_View import show_lu_factorization
+from Views.LU_factorization_View import show_LU_factorization
+from Views.PLU_factorization_View import show_PLU_factorization
 from Views.Vandermonde_View import show_vandermonde
 from Views.NewtonDividedDiff_View import show_newton_divided_diff
 from Views.Lagrange_View import show_lagrange
@@ -78,9 +79,9 @@ elif st.session_state.page == "systems":
     # Dropdown to select a system-solving method
     system_method = st.selectbox(
         "Select a system-solving method",
-        ["Gauss-Jordan without Pivoting", "Gauss-Jordan with Partial Pivoting", "Gauss-Jordan with Total Pivoting", "LU Factorization"]
+        ["Gauss-Jordan without Pivoting", "Gauss-Jordan with Partial Pivoting", "Gauss-Jordan with Total Pivoting", "LU Factorization","PLU Factorization"]
     )
-    
+
     # Display the corresponding method content based on the dropdown selection
     if system_method == "Gauss-Jordan without Pivoting":
         show_gauss_jordan_no_pivot()
@@ -89,7 +90,9 @@ elif st.session_state.page == "systems":
     elif system_method == "Gauss-Jordan with Total Pivoting":
         show_gauss_jordan_total_pivot()
     elif system_method == "LU Factorization":
-        show_lu_factorization()
+        show_LU_factorization()
+    elif system_method == "PLU Factorization":
+        show_PLU_factorization()
 
 elif st.session_state.page == "interpolation":
     st.title("Interpolation Methods")

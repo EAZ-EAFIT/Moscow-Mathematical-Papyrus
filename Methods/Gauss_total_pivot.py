@@ -1,20 +1,29 @@
 import pandas as pd
 import sympy as sp
 import numpy as np
-from Methods.matrix_helpers import back_substitution
+from .matrix_helpers import back_substitution
 
 def gauss_total_pivot(A, b):
+    A = A.copy().astype(float)
     n = len(A)
     i = 0
-    original_x = np.zeros(n)
+
+    old_x = np.arange(n)
     while i < n:
 
-        row_index = np.argmax(np.abs(A[i:, i])) + i
-        col_index = np.argmax(np.abs(A[i]))
-        if A[row_index][i] == 0 or A[i][col_index] == 0:
+        max_element = 0
+        for row in range(i, n):
+            for col in range(i, n):
+                if abs(A[row][col]) > abs(max_element):
+                    max_element = A[row][col]
+                    row_index = row
+                    col_index = col
+
+        #revisar si es valido
+        if max_element == 0:
             return {"status":"error", "message":"The matrix is singular."}
 
-        swap_row = A[row_index].copy()
+        swap_row = A[i].copy()
         A[i] = A[row_index]
         A[row_index] = swap_row
 
@@ -22,32 +31,26 @@ def gauss_total_pivot(A, b):
         b[i] = b[row_index]
         b[row_index] = swap_b
 
-        current_value = A[i][i]
+        # Swap the columns in A
+        swap_col = A[:, i].copy()
+        A[:, i] = A[:, col_index]
+        A[:, col_index] = swap_col
+
+        # Swap the columns in x
+        swap_x = old_x[i]
+        old_x[i] = old_x[col_index]
+        old_x[col_index] = swap_x
+
         for j in range(i+1, n):
             factor = A[j][i] /A[i][i]
             A[j] = A[j] - factor * A[i]
             b[j] = b[j] - factor * b[i]
             A[j][i] = 0
         i += 1
-        print("A", A)
 
-    return {"status":"success", "A":A, "b":b}
+    x = back_substitution(A, b)
+    new_x = np.zeros(n)
+    for i in range(n):
+        new_x[old_x[i]] = x[i]
 
-# Example
-A = np.array([[4, 1, 2], [2, 3, 2], [57, 0, 0]], dtype=float)
-b = np.array([4, 5, 6], dtype=float)
-
-print("real")
-
-print(np.linalg.solve(A,b))
-
-result = gauss_total_pivot(A, b)
-
-if result["status"] == "error":
-    print(result["message"])
-else:
-    print("A")
-    print(result["A"])
-    print("b")
-    print(result["b"])
-    print("Solution ",back_substitution(result["A"], result["b"]))
+    return {"status":"success", "A":A, "b":b, "x":new_x}

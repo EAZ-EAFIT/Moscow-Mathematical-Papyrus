@@ -2,7 +2,7 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import definite_matrix_interface, calculate_tolerance, iterative_matrix_interface
+from interface_blocks import definite_matrix_interface, calculate_tolerance, iterative_matrix_interface, gauss_matrix_result
 from Methods.Gauss_no_pivot import gauss_no_pivot
 from Methods.matrix_helpers import back_substitution
 
@@ -17,13 +17,10 @@ def show_gauss_jordan_no_pivot():
         st.error(result["message"])
         return
     else:
-        eliminated_matrix = result["A"]
+        row_echelon = result["A"]
         vector_b = result["b"]
 
-        vector_x = back_substitution(eliminated_matrix, vector_b)
+        vector_x = back_substitution(row_echelon, vector_b)
+    
+    gauss_matrix_result(row_echelon, vector_b, vector_x)
 
-        vector_x = sp.Matrix(vector_x)
-
-    st.subheader("Results")
-    st.write("The solution vector is:")
-    st.latex(sp.latex(vector_x))
