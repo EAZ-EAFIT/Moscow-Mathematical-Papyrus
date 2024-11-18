@@ -5,7 +5,6 @@ import sympy as sp
 import plotly.graph_objs as go
 import plotly.io as pio
 import os
-
 def enter_function(placeholder_variable = "x", placeholder_function = "sin(x)"):
     col1, col2 = st.columns(2)
     with col1:
@@ -112,33 +111,60 @@ def graph(x, function_input):
     except FileNotFoundError:
         st.error("SVG file not found. Please check if it was created correctly.")
 
-def definite_matrix_interface():
+def definite_matrix_interface(x_0 = None):
     col1 = st.columns(1)[0]
     with col1:
         rows_A = st.number_input("Enter number of rows:", min_value=2, value=3)
         cols_A = rows_A
 
-    col2, col3 = st.columns(2)
-    with col2:
+    if x_0 is None:
+        col2, col3 = st.columns(2)
+        with col2:
 
-        matrix_A = pd.DataFrame(np.zeros((rows_A, cols_A)), columns=[f'x_{i}' for i in range(cols_A)])
+            matrix_A = pd.DataFrame(np.zeros((rows_A, cols_A)), columns=[f'x_{i}' for i in range(cols_A)])
 
-        st.write("A matrix:")
-        edited_matrix = st.data_editor(matrix_A, num_rows="fixed")
+            st.write("**A Matrix**")
+            edited_matrix = st.data_editor(matrix_A, num_rows="fixed")
 
-        # Convert the edited matrix to a NumPy array
+            # Convert the edited matrix to a NumPy array
+            matrix_A = edited_matrix.to_numpy()
+        with col3:
+            rows_b = rows_A
+            cols_b = 1
+            vector_b = pd.DataFrame(np.zeros((rows_b, cols_b)), columns=[f'b' for i in range(cols_b)])
+
+            st.write("**b Vector**")
+            edited_vector = st.data_editor(vector_b, num_rows="fixed")
+
+            vector_b = edited_vector.to_numpy()
+
+        return matrix_A, vector_b
+    
+    else:
+        # Input for A matrix
+        matrix_A = pd.DataFrame(np.zeros((rows_A, cols_A)), columns=[f'x_{i + 1}' for i in range(cols_A)])
+        st.write("**A Matrix**")
+        edited_matrix = st.data_editor(matrix_A, num_rows="fixed", use_container_width=True)
         matrix_A = edited_matrix.to_numpy()
-    with col3:
-        rows_b = rows_A
-        cols_b = 1
-        vector_b = pd.DataFrame(np.zeros((rows_b, cols_b)), columns=[f'b' for i in range(cols_b)])
 
-        st.write("b vector:")
-        edited_vector = st.data_editor(vector_b, num_rows="fixed")
+        col5, col3, col4 = st.columns(3)
+        with col5:
+            norm_value = norm()
+        with col3:
+            # Input for b vector
+            vector_b = pd.DataFrame(np.zeros((rows_A, 1)), columns=["b"])
+            st.write("**b Vector**")
+            edited_vector = st.data_editor(vector_b, num_rows="fixed", use_container_width=True)
+            vector_b = edited_vector.to_numpy()
 
-        vector_b = edited_vector.to_numpy()
+        with col4:
+            # Input for x_0 vector
+            vector_x0 = pd.DataFrame(np.zeros((rows_A, 1)), columns=["x₀"])
+            st.write("**Initial Guess Vector (x₀)**")
+            edited_vector_x0 = st.data_editor(vector_x0, num_rows="fixed", use_container_width=True)
+            vector_x0 = edited_vector_x0.to_numpy()
 
-    return matrix_A, vector_b
+        return matrix_A, vector_b, vector_x0, norm_value
 
 def iterative_matrix_interface():
     col1 = st.columns(1)[0]
@@ -268,7 +294,7 @@ def show_table(result, deci = True, decimals = None):
         decimals = st.slider(
             "Select number of decimals to display on table",
             min_value=1, 
-            max_value=10, 
+            max_value=5, 
             value=4,
             help="Adjust the number of decimal places for the result table."
         )
@@ -277,6 +303,19 @@ def show_table(result, deci = True, decimals = None):
         result = result.style.format(f"{{:.{decimals}f}}")
 
     st.dataframe(result, use_container_width=True)
+
+def show_matrix(matrix, deci = True, decimals = None):
+    if deci:
+        decimals = st.slider(
+            "Select number of decimals to display",
+            min_value=1, 
+            max_value=5, 
+            value=4,
+            help="Adjust the number of decimal places in the matrix."
+        )
+    if deci or decimals != None:
+        matrix = np.round(matrix, decimals)
+    st.dataframe(matrix, use_container_width=True)
 
 def gauss_matrix_result(row_echelon, vector_b, vector_x, decimals = 5):
         decimals = st.slider(
@@ -331,3 +370,18 @@ def LU_result(U, L, vector_x, P=None, decimals = 5):
         st.write("**Solution vector**")
         vector_x = sp.Matrix(np.round(vector_x, decimals))
         st.latex(f"\\vec{{x}} = {sp.latex(vector_x)}")
+
+def norm():
+    # Method to ask the user if they want 1, 2, 3 or infinity norm
+    norm_value = st.radio(
+        "Select the norm to use:",
+        ("1-norm", "2-norm", "Infinity-norm"),
+        help="Choose the norm to use for error calculation."
+    )
+    if norm_value == "1-norm":
+        norm_value = 1
+    elif norm_value == "2-norm":
+        norm_value = 2
+    elif norm_value == "Infinity-norm":
+        norm_value = 'inf'
+    return norm_value
