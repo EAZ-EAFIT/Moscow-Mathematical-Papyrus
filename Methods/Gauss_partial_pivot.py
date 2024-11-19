@@ -27,22 +27,3 @@ def gauss_partial_pivot(A, b):
             A[j][i] = 0
         i += 1
     return {"status":"success", "A":A, "b":b}
-
-# Example
-A = np.array([[4, 1, 2], [2, 3, 2], [57, 0, 0]], dtype=float)
-b = np.array([4, 5, 6], dtype=float)
-
-print("real")
-
-print(np.linalg.solve(A,b))
-
-result = gauss_partial_pivot(A, b)
-
-if result["status"] == "error":
-    print(result["message"])
-else:
-    print("A")
-    print(result["A"])
-    print("b")
-    print(result["b"])
-    print("Solution ",back_substitution(result["A"], result["b"]))

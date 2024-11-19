@@ -28,7 +28,6 @@ def gauss_no_pivot(A, b):
             swap_b = b[i].copy()
             b[i] = b[j]
             b[j] = swap_b
-        print("A", A)
 
         for j in range(i+1, n):
             factor = A[j][i] /A[i][i]
@@ -45,10 +44,7 @@ def back_substitution(A,b):
 
     for i in range(n-1, -1, -1):
 
-        print("hallo", i, x[i], b[i])
-
         x[i] = b[i]
-        print(i, x[i], b[i])
         for j in range(i+1, n):
             if j != i:
                 x[i] -= A[i][j] * x[j]
@@ -66,15 +62,3 @@ def forward_substitution(A,b):
                 x[i] -= A[i][j] * x[j]
         x[i] = x[i] / A[i][i]
     return x
-
-# Example
-A = np.array([[0, 1, 0], [0, 3, 2], [1, 0, 0]], dtype=float)
-b = np.array([4, 5, 6], dtype=float)
-
-print("real",np.linalg.solve(A,b))
-result = gauss_no_pivot(A, b)
-if result["status"] == "error":
-    print(result["message"])
-else:
-    print(result["A"], result["b"])
-    print("prent",back_substitution(result["A"], result["b"]))

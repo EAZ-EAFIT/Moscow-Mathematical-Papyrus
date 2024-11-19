@@ -12,7 +12,6 @@ def generate_table(x0, niter, method, function, args):
     row["abs_err"] = 0
     row["rel_err"] = 0
     table.append(row)
-    print(table)
 
     iter = 1
     while (iter < niter):
@@ -22,27 +21,16 @@ def generate_table(x0, niter, method, function, args):
         row["xn"] = res["result"]
         row["f(n)"] = function(res["result"])
         row["abs_err"] = abs(row["xn"] - table[iter-1]["xn"])
-        #print(row["xn"], table[iter-1]["xn"])
         args = res["args"]
 
         if (res["finish"]):
             table.append(row)
-            print("helo")
-            print(table)
+            return pd.DataFrame(table)
 
-            df = pd.DataFrame(table)
-            print(df)
-            return 0
-
-        print(row)
-        print(table)
         table.append(row)
-        print()
-        print(table)
         iter += 1
 
-    df = pd.DataFrame(table)
-    print(df)
+    return pd.DataFrame(table)
 
 
 def generate_table2(x0, niter, method, function):
@@ -60,15 +48,13 @@ def generate_table2(x0, niter, method, function):
     table.append(row)
 
     iter = 1
-    while (iter < niter) {
+    while (iter < niter):
         res = method(args)
         row["iter"] = iter
         row["xn"] = res["result"]
         row["f(n)"] = function(res["result"])
         row["abs_err"] = abs(row["xn"] - table[iter-1]["xn"])
         args = res[args]
-    }
     table.append(row)
 
     df = pd.DataFrame(table)
-    print(df)

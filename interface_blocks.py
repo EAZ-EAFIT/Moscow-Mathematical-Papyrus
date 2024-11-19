@@ -4,7 +4,7 @@ import numpy as np
 import sympy as sp
 import plotly.graph_objs as go
 import plotly.io as pio
-import os
+
 def enter_function(placeholder_variable = "x", placeholder_function = "sin(x)"):
     col1, col2 = st.columns(2)
     with col1:
@@ -91,7 +91,16 @@ def graph(x, function_input):
         margin=dict(l=0, r=0, t=40, b=0),
         hovermode="closest"
     )
-    print("hello")
+    # Add value calculator
+    st.subheader("Calculate Value at Point")
+    x_calc = st.number_input(
+        "Enter x value",
+        value=float(min(x)),
+        min_value=float(min(x)),
+        max_value=float(max(x))
+    )
+    y_calc = float(function_input(x_calc))
+    st.write(f"Q( ", x_calc, f") = {y_calc:.5f}")
 
     st.plotly_chart(fig)
 
@@ -205,48 +214,29 @@ def iterative_matrix_interface():
 
     return matrix_A, vector_b, vector_x0
 
-def enter_points(val=1):
-    # Use Streamlit's session state to retain current points
-    if 'x_values' not in st.session_state:
-        st.session_state.x_values = []
-    if 'y_values' not in st.session_state:
-        st.session_state.y_values = []
-
-    # Determine default number of points
-    default_value = max(len(st.session_state.x_values), val)  # Ensure default value is at least `val`
-
+def enter_points(val=2):
     # Get the number of points from user input
     num_points = st.number_input(
         "Enter the number of points:", 
         min_value=val, 
-        value=default_value,  # Use `default_value` that is at least `val`
-        step=1, 
-        key="num_points"
+        value=val,
+        step=1
     )
+
     # Create a DataFrame to hold the points
     points_df = pd.DataFrame(np.zeros((2, num_points)), index=['x', 'y'])
 
-    # Ensure slice length matches DataFrame's available length
-    x_values_to_fill = st.session_state.x_values[:num_points]
-    y_values_to_fill = st.session_state.y_values[:num_points]
-
-    # Fill in existing x and y values if available
-    if len(st.session_state.x_values) > 0:
-        points_df.iloc[0][:len(x_values_to_fill)] = x_values_to_fill
-        points_df.iloc[1][:len(y_values_to_fill)] = y_values_to_fill
-        
-        # If the last x value exists, set the next x value to one more
-        if len(st.session_state.x_values) < num_points:
-            points_df.iloc[0][len(x_values_to_fill)] = st.session_state.x_values[-1] + 1
+    # For x values, initialize with sequential numbers starting from 0
+    points_df.iloc[0] = range(num_points)
 
     # Allow the user to edit the DataFrame
-    edited_points_df = st.data_editor(points_df, num_rows="fixed", key="points_editor", use_container_width=True)
+    edited_points_df = st.data_editor(points_df, num_rows="fixed", use_container_width=True)
 
-    # Update session state with new values
-    st.session_state.x_values = edited_points_df.iloc[0].tolist()
-    st.session_state.y_values = edited_points_df.iloc[1].tolist()
+    # Extract x and y values
+    x_values = edited_points_df.iloc[0].tolist()
+    y_values = edited_points_df.iloc[1].tolist()
 
-    return st.session_state.x_values, st.session_state.y_values
+    return x_values, y_values
 
 def graph_with_points(x_values, y_values, function, x_symbol = sp.symbols("x")):
 
@@ -272,6 +262,17 @@ def graph_with_points(x_values, y_values, function, x_symbol = sp.symbols("x")):
     )
 
     st.plotly_chart(fig)
+
+    # Add value calculator
+    st.subheader("Calculate Value at Point")
+    x_calc = st.number_input(
+        "Enter x value",
+        value=float(sum(x_vals)/len(x_vals)),
+        min_value=float(min(x_vals)),
+        max_value=float(max(x_vals))
+    )
+    y_calc = float(function(x_calc))
+    st.write(f"Q({x_calc}) = {y_calc}")
 
     svg_file = "function_graph.svg"
     pio.write_image(fig, svg_file, format='svg', engine='kaleido')
@@ -340,6 +341,19 @@ def gauss_matrix_result(row_echelon, vector_b, vector_x, decimals = 5):
         st.write("**Solution vector**")
         vector_x = sp.Matrix(np.round(vector_x, decimals))
         st.latex(f"\\vec{{x}} = {sp.latex(vector_x)}")
+
+def show_T_and_C(T, C):
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.write("**Matrix T**")
+        T = sp.Matrix(np.round(T, 5))
+        st.latex(f"T = {sp.latex(T)}")
+
+    with col2:
+        st.write("**Vector C**")
+        C = sp.Matrix(np.round(C, 5))
+        st.latex(f"C = {sp.latex(C)}")
 
 def LU_result(U, L, vector_x, P=None, decimals = 5):
         decimals = st.slider(

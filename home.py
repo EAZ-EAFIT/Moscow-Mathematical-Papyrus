@@ -17,6 +17,8 @@ from Views.Vandermonde_View import show_vandermonde
 from Views.NewtonDividedDiff_View import show_newton_divided_diff
 from Views.Lagrange_View import show_lagrange
 from Views.Spline_View import show_spline
+from Views.Gauss_Seidel_View import show_gauss_seidel
+from Views.Spline_Cubic_View import show_quadratic_spline
 
 # Initialize session state if not already initialized
 if "page" not in st.session_state:
@@ -44,10 +46,7 @@ def show_home():
     st.markdown("- Gaussian Elimination Simple")
     st.markdown("- Gaussian Elimination Partial Pivot")
     st.markdown("- Gaussian Elimination Total Pivot")
-    st.markdown("- Direct Factorization")
-    st.markdown("- Crout")
-    st.markdown("- Doolittle")
-    st.markdown("- Cholesky")
+    st.markdown("- Direct Factorization (LU - PLU)")
     st.markdown("- Jacobi")
     st.markdown("- Gauss-Seidel")
     st.markdown("- SOR")
@@ -176,7 +175,7 @@ elif st.session_state.page == "systems":
     # Dropdown to select a system-solving method
     system_method = st.selectbox(
         "Select a system-solving method",
-        ["Gauss-Jordan without Pivoting", "Gauss-Jordan with Partial Pivoting", "Gauss-Jordan with Total Pivoting", "LU Factorization","PLU Factorization", "Jacobi", "Gauss-Seidel", "SOR", "Crout", "Doolittle", "Cholesky"]
+        ["Gauss-Jordan without Pivoting", "Gauss-Jordan with Partial Pivoting", "Gauss-Jordan with Total Pivoting", "LU Factorization","PLU Factorization", "Jacobi", "Gauss-Seidel", "SOR"]
     )
 
     # Display the corresponding method content based on the dropdown selection
@@ -193,16 +192,9 @@ elif st.session_state.page == "systems":
     elif system_method == "Jacobi":
         show_Jacobi()   
     elif system_method == "Gauss-Seidel":
-        st.write("Gauss-Seidel method is not implemented yet.")
+        show_gauss_seidel()
     elif system_method == "SOR":
         st.write("SOR method is not implemented yet.")
-    elif system_method == "Crout":
-        st.write("Crout method is not implemented yet.")
-    elif system_method == "Doolittle":
-        st.write("Doolittle method is not implemented yet.")
-    elif system_method == "Cholesky":
-        st.write("Cholesky method is not implemented yet.")
-
 
 elif st.session_state.page == "interpolation":
     st.title("Interpolation Methods")
@@ -222,5 +214,5 @@ elif st.session_state.page == "interpolation":
     elif interpolation_method == "Linear Spline Interpolation":
         show_spline()
     elif interpolation_method == "Quadratic Spline Interpolation":
-        st.write("Quadratic Spline Interpolation method is not implemented yet.")
+        show_quadratic_spline()
 

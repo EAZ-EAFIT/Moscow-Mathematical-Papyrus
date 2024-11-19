@@ -19,6 +19,7 @@ def show_secant():
         step = 0.0001,
         help="The first initial guess for the root. It is a value where the function is evaluated."
         )
+        
     with col4:
         x1 = st.number_input(
         "Second Point (x_1)",
