@@ -19,6 +19,7 @@ from Views.Lagrange_View import show_lagrange
 from Views.Spline_View import show_spline
 from Views.Gauss_Seidel_View import show_gauss_seidel
 from Views.Spline_Cubic_View import show_quadratic_spline
+from Views.FixedPoint_View import show_fixed_point
 
 # Initialize session state if not already initialized
 if "page" not in st.session_state:
@@ -165,7 +166,7 @@ elif st.session_state.page == "roots":
     elif root_method == "Incremental Search":
         show_incremental()
     elif root_method == "Fixed Point":
-        st.write("Fixed Point method is not implemented yet.")
+        show_fixed_point()
     elif root_method == "Multiple Roots":
         st.write("Multiple Roots method is not implemented yet.")
 

@@ -91,6 +91,7 @@ def graph(x, function_input):
         margin=dict(l=0, r=0, t=40, b=0),
         hovermode="closest"
     )
+    """
     # Add value calculator
     st.subheader("Calculate Value at Point")
     x_calc = st.number_input(
@@ -100,8 +101,9 @@ def graph(x, function_input):
         max_value=float(max(x))
     )
     y_calc = float(function_input(x_calc))
+    
     st.write(f"Q( ", x_calc, f") = {y_calc:.5f}")
-
+    """
     st.plotly_chart(fig)
 
     svg_file = "function_graph.svg"

@@ -3,7 +3,7 @@ import sympy as sp
 import pandas as pd
 import numpy as np
 from interface_blocks import enter_function, calculate_tolerance, graph, show_table
-from Methods.secant import secant
+from Methods.Secant import secant
 
 def show_secant():
     st.header("Secant Method")
