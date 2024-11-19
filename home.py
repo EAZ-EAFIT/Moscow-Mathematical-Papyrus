@@ -20,6 +20,7 @@ from Views.Spline_View import show_spline
 from Views.Gauss_Seidel_View import show_gauss_seidel
 from Views.Spline_Cubic_View import show_quadratic_spline
 from Views.FixedPoint_View import show_fixed_point
+from Views.MultipleRoots_View import show_multiple_roots
 
 # Initialize session state if not already initialized
 if "page" not in st.session_state:
@@ -168,7 +169,7 @@ elif st.session_state.page == "roots":
     elif root_method == "Fixed Point":
         show_fixed_point()
     elif root_method == "Multiple Roots":
-        st.write("Multiple Roots method is not implemented yet.")
+        show_multiple_roots()
 
 elif st.session_state.page == "systems":
     st.title("Solving Systems of Equations")
