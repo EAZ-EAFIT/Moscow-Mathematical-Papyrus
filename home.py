@@ -21,6 +21,7 @@ from Views.Gauss_Seidel_View import show_gauss_seidel
 from Views.Spline_Cubic_View import show_quadratic_spline
 from Views.FixedPoint_View import show_fixed_point
 from Views.MultipleRoots_View import show_multiple_roots
+from Views.SOR_View import show_SOR
 
 # Initialize session state if not already initialized
 if "page" not in st.session_state:
@@ -196,7 +197,7 @@ elif st.session_state.page == "systems":
     elif system_method == "Gauss-Seidel":
         show_gauss_seidel()
     elif system_method == "SOR":
-        st.write("SOR method is not implemented yet.")
+        show_SOR()
 
 elif st.session_state.page == "interpolation":
     st.title("Interpolation Methods")
