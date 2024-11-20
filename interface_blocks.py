@@ -431,5 +431,5 @@ def graph_Ab(A, b):
 
         st.plotly_chart(fig)
     else:
-        st.error("The matrix does not represent a function y=f(x) so it cannot be graphed")
+        st.info("The matrix does not represent a function y=f(x) so it cannot be graphed")
     
