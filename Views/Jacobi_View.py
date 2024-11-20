@@ -97,6 +97,7 @@ def show_Jacobi():
             st.write("Spectral Radius: ", rad_esp)
             show_T_and_C(T, C)
         else:
+            st.write("Spectral Radius: ", rad_esp)
             st.error(err)
     except:
         st.error("Error: Please Check Your Input")
