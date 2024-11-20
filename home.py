@@ -18,10 +18,11 @@ from Views.NewtonDividedDiff_View import show_newton_divided_diff
 from Views.Lagrange_View import show_lagrange
 from Views.Spline_View import show_spline
 from Views.Gauss_Seidel_View import show_gauss_seidel
-from Views.Spline_Cubic_View import show_quadratic_spline
+from Views.Spline_Quadratic_View import show_quadratic_spline
 from Views.FixedPoint_View import show_fixed_point
 from Views.MultipleRoots_View import show_multiple_roots
 from Views.SOR_View import show_SOR
+from Views.Spline_Cubic_View import show_cubic_spline
 
 # Initialize session state if not already initialized
 if "page" not in st.session_state:
@@ -61,6 +62,7 @@ def show_home():
     st.markdown("- Lagrange")
     st.markdown("- Spline Linear")
     st.markdown("- Spline Quadratic")
+    st.markdown("- Spline Cubic")
 
     st.header("How to Input Functions in Python SymPy")
     st.write("""
@@ -153,11 +155,11 @@ elif st.session_state.page == "roots":
     # Dropdown to select root-finding method
     root_method = st.selectbox(
         "Select a root-finding method",
-        ["Newton", "Secant", "Bisection", "False Position", "Incremental Search", "Fixed Point", "Multiple Roots"]
+        ["Incremental Search", "Bisection", "Newton-Raphson", "Secant", "False Position", "Fixed Point", "Multiple Roots"]
     )
     
     # Display the corresponding method content based on the dropdown selection
-    if root_method == "Newton":
+    if root_method == "Newton-Raphson":
         show_newton()
     elif root_method == "Secant":
         show_secant()
@@ -204,7 +206,7 @@ elif st.session_state.page == "interpolation":
     # Dropdown to select interpolation method
     interpolation_method = st.selectbox(
         "Select an interpolation method",
-        ["Vandermonde Matrix", "Newton Divided Difference", "Lagrange Interpolation", "Linear Spline Interpolation", "Quadratic Spline Interpolation"]
+        ["Vandermonde Matrix", "Newton Divided Difference", "Lagrange Interpolation", "Linear Spline Interpolation", "Quadratic Spline Interpolation", "Cubic Spline Interpolation"]
     )
     
     # Display the corresponding method content based on the dropdown selection
@@ -218,4 +220,6 @@ elif st.session_state.page == "interpolation":
         show_spline()
     elif interpolation_method == "Quadratic Spline Interpolation":
         show_quadratic_spline()
+    elif interpolation_method == "Cubic Spline Interpolation":
+        show_cubic_spline()
 

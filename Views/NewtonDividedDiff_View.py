@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import sympy as sp
-from Methods.newton_interpolation import newton_interpolation
+from Methods.Newton_interpolation import newton_interpolation
 from interface_blocks import enter_points, graph_with_points, show_table
 
 def show_newton_divided_diff():

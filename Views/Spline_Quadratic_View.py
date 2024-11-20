@@ -1,22 +1,22 @@
 import streamlit as st
 import sympy as sp
 import numpy as np
-from Methods.Spline_cubic import cubic_spline_interpolation
+from Methods.Spline_quadratic import quadratic_spline_interpolation
 from interface_blocks import enter_points, graph_with_points
 
-def show_cubic_spline():
-    st.header("Cubic Spline Method")
+def show_quadratic_spline():
+    st.header("Quadratic Spline Method")
 
-    # Input points (minimum 4 points required for cubic spline)
-    x_values, y_values = enter_points(val=4)
+    # Input points (minimum 3 points required for quadratic spline)
+    x_values, y_values = enter_points(val=3)
 
     # Input validation
     if len(x_values) != len(set(x_values)):
         st.error("Error: The points entered have an x-repeated value, which makes it impossible to be represented as a function.")
         return
     
-    if len(x_values) < 4:
-        st.error("Error: At least 4 points are required for cubic spline interpolation.")
+    if len(x_values) < 3:
+        st.error("Error: At least 3 points are required for quadratic spline interpolation.")
         return
 
     try:
@@ -35,9 +35,9 @@ def show_cubic_spline():
             help="Adjust the number of decimal places for the result."
         )
 
-        # Perform cubic spline interpolation
+        # Perform quadratic spline interpolation
         try:
-            piecewise_function_unrounded, piecewise_function_rounded = cubic_spline_interpolation(
+            piecewise_function_unrounded, piecewise_function_rounded = quadratic_spline_interpolation(
                 x_values, 
                 y_values, 
                 decimals=decimals
@@ -45,7 +45,7 @@ def show_cubic_spline():
 
             # Display results
             st.subheader("Results")
-            st.write("**Cubic Spline Piecewise Function**")
+            st.write("**Quadratic Spline Piecewise Function**")
             st.latex(sp.latex(piecewise_function_rounded))
 
             # Convert the symbolic function to a numerical function

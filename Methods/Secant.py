@@ -1,6 +1,4 @@
-import streamlit as st
 import pandas as pd
-import sympy as sp
 
 def secant(x0, x1, niter, tol, function, tolerance_type):
     table = []

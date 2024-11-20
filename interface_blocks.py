@@ -19,6 +19,12 @@ def enter_function(placeholder_variable = "x", placeholder_function = "sin(x)"):
             value = placeholder_function,
             help = "Enter a function in terms of the variable chosen."
             )
+    if not x.isalpha():
+            st.error("Error: Variable name must be a single alphabetic character.")
+            return
+    if not function_input:
+        st.error("Error: Please enter a function.")
+        return
     return x, function_input
 
 def calculate_tolerance():
@@ -66,18 +72,12 @@ def calculate_tolerance():
     return tol, niter, tolerance_type
 
 
-def graph(x, function_input):
+def graph(x, function_input, min_value=-10, max_value=10):
 
     # Create a symbolic function
     function = sp.lambdify(x, sp.sympify(function_input), 'numpy')
 
-    col7, col8 = st.columns(2)
-    with col7:
-        x_min = st.number_input(f"Enter the minimum value for {x}", value=0, step=1)
-    with col8:
-        x_max = st.number_input(f"Enter the maximum value for {x}", value=10, step=1)
-
-    x_vals = np.linspace(x_min, x_max, 1000)
+    x_vals = np.linspace(min_value, max_value, 1000)
     y_vals = function(x_vals)
 
     fig = go.Figure()
@@ -91,19 +91,7 @@ def graph(x, function_input):
         margin=dict(l=0, r=0, t=40, b=0),
         hovermode="closest"
     )
-    """
-    # Add value calculator
-    st.subheader("Calculate Value at Point")
-    x_calc = st.number_input(
-        "Enter x value",
-        value=float(min(x)),
-        min_value=float(min(x)),
-        max_value=float(max(x))
-    )
-    y_calc = float(function_input(x_calc))
-    
-    st.write(f"Q( ", x_calc, f") = {y_calc:.5f}")
-    """
+
     st.plotly_chart(fig)
 
     svg_file = "function_graph.svg"
@@ -121,6 +109,18 @@ def graph(x, function_input):
             )
     except FileNotFoundError:
         st.error("SVG file not found. Please check if it was created correctly.")
+    # Add value calculator
+    st.subheader("Calculate Value at Point")
+    x_calc = st.number_input(
+        "Enter x value",
+        value=float(min_value),
+        min_value=float(min_value),
+        max_value=float(max_value)
+    )
+    x_calc = float(x_calc)
+    y_calc = float(function(x_calc))
+    
+    st.write(f"f( ", x_calc, f") = {y_calc:.5f}")
 
 def definite_matrix_interface(x_0 = None):
     col1 = st.columns(1)[0]

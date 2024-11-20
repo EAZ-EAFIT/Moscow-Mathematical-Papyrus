@@ -3,7 +3,7 @@ import sympy as sp
 import pandas as pd
 import numpy as np
 from interface_blocks import enter_function, calculate_tolerance, graph
-from Methods.regula_falsi import regula_falsi
+from Methods.Regula_falsi import regula_falsi
 
 def show_regula_falsi():
     st.header("False Position Method")
