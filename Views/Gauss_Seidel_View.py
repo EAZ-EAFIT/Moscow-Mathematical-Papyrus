@@ -5,7 +5,6 @@ from Methods.Gauss_seidel import gauss_seidel_method
 def show_gauss_seidel():
     st.header("Gauss Seidel Method")
 
-
     matrix_A, vector_b, x_0, norm_value = definite_matrix_interface(x_0 = "Yes")
 
     tol, niter, tolerance_type = calculate_tolerance()

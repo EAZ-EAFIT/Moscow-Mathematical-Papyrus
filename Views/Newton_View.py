@@ -1,7 +1,7 @@
 import streamlit as st
 import sympy as sp
 from interface_blocks import enter_function, calculate_tolerance, graph
-from Methods.Newton import get_derivative, newton
+from Methods.newton import get_derivative, newton
 
 def show_newton():
 
