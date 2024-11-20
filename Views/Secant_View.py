@@ -89,6 +89,7 @@ def show_secant():
         mid = result.iloc[-1]['x_n']
         st.success(f"Root found at x = {mid:.2f}: f({mid:.2f}) = {function(mid):.2f}")
 
-        graph(x, function_input)
     except:
         st.error("Error: Check your input")
+
+    graph(x, function_input)

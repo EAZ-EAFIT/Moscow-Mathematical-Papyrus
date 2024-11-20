@@ -87,8 +87,8 @@ def show_multiple_roots():
         
             mid = result["table"].iloc[-1]['x_i']
             st.success(f"Root found at x = {mid:.2f}: f({mid:.2f}) = {function(mid):.2f}")
-        # Gráfica de la función
-        graph(x, function_input)
+    
     except Exception as e:
         st.error("Error: Check your inputs")
     
+    graph(x, function_input)

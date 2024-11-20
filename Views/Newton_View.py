@@ -93,8 +93,8 @@ def show_newton():
         mid = result.iloc[-1]['x_n']
         st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
 
-        graph(x, function_input)
 
     except Exception as e:
         print(e)
         st.error("Error: Check your input")
+    graph(x, function_input)

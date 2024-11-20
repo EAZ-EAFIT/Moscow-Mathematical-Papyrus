@@ -111,6 +111,8 @@ def show_bisection():
         mid = result.iloc[-1]['mid']
         st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
 
-        graph(x, function_input)
+        
     except Exception as e:
         st.error("Error: Check your inputs ")
+
+    graph(x, function_input)
