@@ -143,7 +143,7 @@ if st.sidebar.button("Solving Systems of Equations"):
 if st.sidebar.button("Interpolation Methods"):
     st.session_state.page = "interpolation"
 
-st.sidebar.image("confused-cat-looking-smart.jpeg", width=200)
+st.sidebar.image("confused-cat-looking-smart.jpeg", width=250)
 st.sidebar.write("Amelia Hoyos, Paulina Cerón, Valentina Vásquez, Esteban Álvarez")
 
 # Render the page based on session state

@@ -83,7 +83,7 @@ def show_gauss_seidel():
 
         X, table, rad_esp, err, T, C = gauss_seidel_method(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type)
 
-        print(err)
+ 
         if err == None:
             st.success("The Gauss Seidel method has converged successfully.")
             # Display the results
@@ -96,6 +96,7 @@ def show_gauss_seidel():
 
         else:
             st.write("Spectral Radius: ", rad_esp)
+            st.error(f"Error: Please Check Your Input. {err}")
     except Exception as e:
         st.error(f"Error: Please Check Your Input")
 
