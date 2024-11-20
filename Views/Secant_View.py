@@ -84,11 +84,16 @@ def show_secant():
         else:
             result = result["table"]
 
-        show_table(result)
-
         mid = result.iloc[-1]['x_n']
-        st.success(f"Root found at x = {mid:.2f}: f({mid:.2f}) = {function(mid):.2f}")
+
+        if function(mid) <= 0 + tol:
+            st.subheader("Results")
+            decimals = show_table(result)
+            st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
+        else:
+            st.warning(f"Method did not converge, potentially because of a discontinuity in the function.")
 
         graph(x, function_input)
-    except:
+    except Exception as e:
         st.error("Error: Check your input")
+        print(e)

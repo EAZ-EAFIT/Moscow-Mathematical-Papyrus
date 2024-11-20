@@ -112,12 +112,15 @@ def show_regula_falsi():
         # Format the dataframe to display the selected number of decimals
         result_display = result.style.format(f"{{:.{decimals}f}}")  # Use f-string to format dynamically
 
-        st.subheader("Results")
-        st.dataframe(result_display, use_container_width=True)
-
         mid = result.iloc[-1]['x_intersect']
-        st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
+        if function(mid) < 0 + tol:
+            st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
+            st.subheader("Results")
+            st.dataframe(result_display, use_container_width=True)
+        else:
+            st.warning(f"Method did not converge, potentially because of a discontinuity in the function.")
 
         graph(x, function_input)
-    except:
+    except Exception as ep:
         st.error("Error: Check inputs")
+        print(ep)

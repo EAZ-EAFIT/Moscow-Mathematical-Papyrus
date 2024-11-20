@@ -82,11 +82,14 @@ def show_multiple_roots():
         # Mostrar resultados o errores
         if result["status"] == "error":
             st.error(result["message"])
-        else:
-            show_table(result["table"])
-        
+        else:        
             mid = result["table"].iloc[-1]['x_i']
-            st.success(f"Root found at x = {mid:.2f}: f({mid:.2f}) = {function(mid):.2f}")
+            if function(mid) < 0 + tol:
+                decimals = show_table(result["table"])
+                st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
+            else:
+                st.warning(f"Method did not converge, potentially because of a discontinuity in the function.")
+
         # Gráfica de la función
         graph(x, function_input)
     except Exception as e:

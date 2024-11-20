@@ -2,6 +2,10 @@ import pandas as pd
 
 
 def bisection(a, b, niter, tol, tolerance_type, function):
+
+    if b < a:
+        return {"status":"error" , "message":"Invalid Arguments, b must be greater than a."}
+    
     table = []
     row = {}
     Error = "Relative Error" if tolerance_type == "Significant Figures" else "Absolute Error"
@@ -23,7 +27,7 @@ def bisection(a, b, niter, tol, tolerance_type, function):
         mid = (a + b)/2
         iter = 0
         while (iter < niter and err > tol):
-            if (function(a)*function(mid) < 0):
+            if (function(a)*function(mid) <= 0):
                 b = mid
             else:
                 a = mid

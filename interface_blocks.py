@@ -313,6 +313,8 @@ def show_table(result, deci = True, decimals = None):
 
     st.dataframe(result, use_container_width=True)
 
+    return decimals
+
 def show_matrix(matrix, deci = True, decimals = None):
     if deci:
         decimals = st.slider(

@@ -90,6 +90,7 @@ def show_bisection():
 
         if result["status"] == "error":
             st.error(result["message"])
+            graph(x, function_input)
             return
         else:
             result = result["table"]
@@ -109,7 +110,10 @@ def show_bisection():
         st.dataframe(result_display, use_container_width=True)
 
         mid = result.iloc[-1]['mid']
-        st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
+        if function(mid) < 0 + tol:
+            st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
+        else:
+            st.warning(f"Method did not converge, potentially because of a discontinuity in the function.")
 
         graph(x, function_input)
     except Exception as e:
