@@ -95,3 +95,4 @@ def show_multiple_roots():
     except Exception as e:
         st.error("Error: Check your inputs")
     
+    graph(x, function_input)

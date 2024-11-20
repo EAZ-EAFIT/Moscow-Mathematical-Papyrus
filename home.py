@@ -138,9 +138,13 @@ if st.sidebar.button("Finding Roots"):
 if st.sidebar.button("Solving Systems of Equations"):
     st.session_state.page = "systems"
 
+
 # Buttons for "Interpolation Methods"
 if st.sidebar.button("Interpolation Methods"):
     st.session_state.page = "interpolation"
+
+st.sidebar.image("confused-cat-looking-smart.jpeg", width=200)
+st.sidebar.write("Amelia Hoyos, Paulina Cerón, Valentina Vásquez, Esteban Álvarez")
 
 # Render the page based on session state
 if st.session_state.page == "home":

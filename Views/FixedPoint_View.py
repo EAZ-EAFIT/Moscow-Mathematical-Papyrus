@@ -18,15 +18,15 @@ def validate_fixed_point_function(x_symbol, f_function, g_function):
     """
     try:
         # Find roots of f(x)
-        roots = sp.solve(f_function, x_symbol)
-        
+       # roots = sp.solve(f_function, x_symbol)
+        """
         # Check if g(root) = root for all roots of f(x)
         for root in roots:
             transformed_root = g_function.subs(x_symbol, root)
             if not sp.simplify(transformed_root - root).is_zero:
                 st.error(f"Error: g(x) does not satisfy the fixed-point condition g(x) = x when f(x) = 0  at x = {root}.")
                 return False
-        
+        """
         # Check convergence condition |g'(x)| < 1 around the roots
         g_derivative = sp.diff(g_function, x_symbol)
         for root in roots:
@@ -37,6 +37,7 @@ def validate_fixed_point_function(x_symbol, f_function, g_function):
         return True
     except Exception as e:
         st.error(f"Error: Please check your inputs")
+        print(e)
         return False
 
 def show_fixed_point():
@@ -113,10 +114,13 @@ def show_fixed_point():
         st.error(f"Invalid function input: Please check your inputs")
         return
 
+
+
+    """
     # Validate the functions
     if not validate_fixed_point_function(x_symbol, f_function, g_function):
         return
-
+    """
     # Display the functions in LaTeX
     st.subheader("Functions")
     st.latex(f"f({x_symbol}) = {sp.latex(f_function)}")
@@ -180,7 +184,8 @@ def show_fixed_point():
 
             st.success(f"Root found at x = {x_next:.{decimals}f}, f(x) = {f_value:.{decimals}f}")
 
-
+           
     except Exception as e:
         st.error(f"Error: Please check your inputs {e}")
 
+    graph(x,f_input)

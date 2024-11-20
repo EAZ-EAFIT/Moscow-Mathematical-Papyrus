@@ -95,5 +95,6 @@ def show_SOR():
             show_T_and_C(T, C)
         else:
             st.error(err)
-    except:
+    except Exception as e:
         st.error("Error: Please Check The Input")
+        print(e)

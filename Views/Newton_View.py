@@ -96,8 +96,8 @@ def show_newton():
         else:
             st.warning(f"Method did not converge, potentially because of a discontinuity in the function.")
 
-        graph(x, function_input)
 
     except Exception as e:
         print(e)
         st.error("Error: Check your input")
+    graph(x, function_input)

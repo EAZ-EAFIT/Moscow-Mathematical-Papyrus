@@ -115,6 +115,8 @@ def show_bisection():
         else:
             st.warning(f"Method did not converge, potentially because of a discontinuity in the function.")
 
-        graph(x, function_input)
+        
     except Exception as e:
         st.error("Error: Check your inputs ")
+
+    graph(x, function_input)

@@ -119,10 +119,14 @@ def gauss_seidel_method(A, b, X_i, tol, niter, norm=2, error_type="Significant F
     
     # Check if A is singular (non-invertible)
     try:
-        np.linalg.det(A)  # Check the determinant of A
+        det = np.linalg.det(A)  # Check the determinant of A
+        if det == 0:
+            err = "Matrix A is singular (non-invertible). Please check the matrix and try again."
+            return None, None, None, err, None, None
     except np.linalg.LinAlgError:
         err = "Matrix A is singular (non-invertible). Please check the matrix and try again."
         return None, None, None, err, None, None
+    
     
     # Split matrix A into diagonal, lower, and upper parts
     D = np.diag(np.diagonal(A))
