@@ -222,7 +222,10 @@ def enter_points(val=2):
         "Enter the number of points:", 
         min_value=val, 
         value=val,
-        step=1
+        step=1,
+        help='''First, specify the number of points you want to enter. 
+    Once the number of points is selected, you'll be able to input the x and y coordinates. 
+    You can enter the coordinates in any order (not necessarily sequential).'''
     )
 
     # Create a DataFrame to hold the points
