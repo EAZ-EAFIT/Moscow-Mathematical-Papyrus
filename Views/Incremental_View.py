@@ -7,7 +7,7 @@ from Methods.Incremental import incremental_search
 
 def show_incremental():
     st.markdown("""
-    Incremental search is a numerical method used to approximate the roots of a function f(x). 
+    Incremental search is a numerical method used to approximate the roots of a function ${f(x)}$. 
     It works by iteratively evaluating the function over a specified interval and looking for sign changes 
     between consecutive evaluations. A sign change indicates the presence of a root within the interval.
     """, unsafe_allow_html=True)
@@ -15,36 +15,39 @@ def show_incremental():
     with st.expander("📘 How Incremental Search Works"):
         st.markdown("""
         **1. Define the Interval and Step Size:**
-        - Choose an interval [a, b] where you suspect the root lies.
-        - Select a step size Delta x for evaluating the function incrementally.
+        - Choose an interval $[a, b]$ where you suspect the root lies.
+        - Select a step size $\Delta x$ for evaluating the function incrementally.
 
         **2. Evaluate the Function Incrementally:**
-        - Start at the lower bound a.
-        - Evaluate f(x) at each increment""")
-        
-        st.latex(r"""x_i = a + i \cdot \Delta x, i = 0, 1, 2, \dots.""")
-
+        - Start at the lower bound $a$.
+        - Evaluate $f(x)$ at each increment:
+        """)
+        st.latex(r"""
+        x_i = a + i \cdot \Delta x, \; i = 0, 1, 2, \dots
+        """)
         st.markdown("""
-        **3. Check for Sign Changes:**
-        - If """)
-                    
-        st.latex(r"""f(x_i) \cdot f(x_{i+1}) < 0""")
-                    
-                    
-        st.markdown(""" there is a root in the interval.""")
-
-        st.latex(r"""[x_i, x_{i+1}]""")
+            **3. Check for Sign Changes:**
+            - If 
+        """)
+        st.latex(r"""
+        f(x_i) \cdot f(x_{i+1}) < 0
+        """)
         st.markdown("""
-                    
+            there is a root in the interval:
+        """)
+        st.latex(r"""
+        [x_i, x_{i+1}]
+        """)
+        st.markdown("""
+            **Advantages:**
+            - Simple to implement and understand.
+            - Does not require derivatives or complex calculations.
 
-        **Advantages:**
-        - Simple to implement and understand.
-        - Does not require derivatives or complex calculations.
-
-        **Disadvantages:**
-        - May miss roots if the step size Delta x is too large.
-        - Computationally expensive for small Delta x over large intervals.
+            **Disadvantages:**
+            - May miss roots if the step size $\Delta x$ is too large.
+            - Computationally expensive for small $\Delta x$ over large intervals.
         """, unsafe_allow_html=True)
+
 
     try:
         st.header("Incremental Search Method")
@@ -106,6 +109,10 @@ def show_incremental():
         st.subheader("Results")
         st.dataframe(result_display, use_container_width=True)
 
+        mid = result.iloc[-1]['x_i']
+        st.success(f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}")
+
         graph(x, function_input)
     except Exception as e:
         st.error("Error: Check your inputs")
+        print(e)
