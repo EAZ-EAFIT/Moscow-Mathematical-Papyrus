@@ -2,7 +2,10 @@ import streamlit as st
 import sympy as sp
 import pandas as pd
 import numpy as np
-from interface_blocks import definite_matrix_interface, calculate_tolerance, iterative_matrix_interface, gauss_matrix_result
+
+import plotly.graph_objs as go
+import plotly.io as pio
+from interface_blocks import definite_matrix_interface, calculate_tolerance, iterative_matrix_interface, gauss_matrix_result, graph_Ab
 from Methods.Gauss_no_pivot import gauss_no_pivot
 from Methods.matrix_helpers import back_substitution
 
@@ -10,6 +13,9 @@ def show_gauss_jordan_no_pivot():
     st.header("Gauss-Jordan Elimination without Pivoting")
 
     matrix_A, vector_b = definite_matrix_interface()
+
+    # Graph the equations represented if n=2
+    graph_Ab(matrix_A, vector_b)
 
     result = gauss_no_pivot(matrix_A, vector_b)
 

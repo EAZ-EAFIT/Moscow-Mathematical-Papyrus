@@ -1,5 +1,5 @@
 import streamlit as st
-from interface_blocks import definite_matrix_interface, calculate_tolerance, show_matrix, show_T_and_C
+from interface_blocks import definite_matrix_interface, calculate_tolerance, show_matrix, show_T_and_C, graph_Ab
 from Methods.SOR import sor_method  # Asegúrate de que el método SOR esté implementado en el módulo correspondiente
 
 def show_SOR():
@@ -15,6 +15,8 @@ def show_SOR():
     omega = st.number_input("Relaxation Factor (ω):", min_value=0.0, max_value=2.0, step=0.1, value=1.0)
 
     st.write("Calculated Tolerance: ", tol)
+
+    graph_Ab(matrix_A, vector_b)
 
     # Ejecutar el método SOR
     X, table, rad_esp, err, T, C = sor_method(matrix_A, vector_b, x_0, tol, niter, omega, norm_value, tolerance_type)

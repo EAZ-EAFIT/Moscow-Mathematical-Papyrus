@@ -60,3 +60,4 @@ def show_graph():
 
     except Exception as e:
             st.error(f"Error: Please check your input.")
+            print(e)

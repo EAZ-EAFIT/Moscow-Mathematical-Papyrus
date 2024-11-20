@@ -1,11 +1,12 @@
 import streamlit as st
-from interface_blocks import definite_matrix_interface, LU_result
+from interface_blocks import definite_matrix_interface, LU_result, graph_Ab
 from Methods.PLU_factorization import PLU_factorization, solve_PLU
 
 def show_PLU_factorization():
     st.header("LU Factorization with pivoting")
 
     matrix_A, vector_b = definite_matrix_interface()
+    graph_Ab(matrix_A, vector_b)
 
     result = PLU_factorization(matrix_A)
 

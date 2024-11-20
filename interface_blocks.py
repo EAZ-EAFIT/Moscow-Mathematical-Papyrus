@@ -80,6 +80,9 @@ def graph(x, function_input, min_value=-10, max_value=10):
     x_vals = np.linspace(min_value, max_value, 1000)
     y_vals = function(x_vals)
 
+    with np.errstate(divide='ignore', invalid='ignore'):
+        y_vals[np.abs(y_vals) > 1/0.0000000001] = None  # Mask large values (possible infinity)
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=x_vals, y=y_vals, mode='lines', name=function_input))
 
@@ -401,3 +404,29 @@ def norm():
     elif norm_value == "Infinity-norm":
         norm_value = 'inf'
     return norm_value
+
+def graph_Ab(A, b):
+    size_A = A.shape[0]
+    if (size_A == 2 and np.linalg.det(A) != 0 and A[0][1] != 0 and A[1][1] != 0):
+        x_values = np.linspace(-10, 10, 100)
+
+        y1 = (b[0] - A[0][0]*x_values) / A[0][1]
+        y2 = (b[1] - A[1][0]*x_values) / A[1][1]
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=x_values, y=y1, mode='lines', name=f'Equation 1: -{A[0][0]/A[0][1]}x + {(b[0]/A[0][1])[0]}'))
+        fig.add_trace(go.Scatter(x=x_values, y=y2, mode='lines', name=f'Equation 2: -{A[1][0]/A[1][1]}x + {(b[1]/A[1][1])[0]}'))
+
+        fig.update_layout(
+            title=f"Graph of the System of Equations",
+            xaxis_title='x',
+            yaxis_title='y',
+            showlegend=True,
+            margin=dict(l=0, r=0, t=40, b=0),
+            hovermode="closest"
+        )
+
+        st.plotly_chart(fig)
+    else:
+        st.error("The matrix does not represent a function y=f(x) so it cannot be graphed")
+    
