@@ -1,6 +1,6 @@
 import streamlit as st
 import sympy as sp
-from Methods.Spline import linear_spline_interpolation
+from Methods.spline import linear_spline_interpolation
 from interface_blocks import enter_points, graph_with_points
 
 def show_spline():

@@ -1,6 +1,6 @@
 import streamlit as st
 from interface_blocks import definite_matrix_interface, calculate_tolerance, show_matrix, show_T_and_C
-from Methods.Gauss_seidel import gauss_seidel_method
+from Methods.gauss_seidel import gauss_seidel_method
 
 def show_gauss_seidel():
     st.header("Gauss Seidel Method")

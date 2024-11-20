@@ -1,7 +1,7 @@
 import streamlit as st
 import sympy as sp
 from interface_blocks import enter_function, calculate_tolerance, graph
-from Methods.Bisection import bisection
+from Methods.bisection import bisection
 
 def show_bisection():
 

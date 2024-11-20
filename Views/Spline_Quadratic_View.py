@@ -1,7 +1,7 @@
 import streamlit as st
 import sympy as sp
 import numpy as np
-from Methods.Spline_quadratic import quadratic_spline_interpolation
+from Methods.spline_quadratic import quadratic_spline_interpolation
 from interface_blocks import enter_points, graph_with_points
 
 def show_quadratic_spline():
